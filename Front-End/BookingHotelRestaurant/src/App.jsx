@@ -1,17 +1,16 @@
+import React from "react";
 import "./App.css";
-import Button from "./component/Button";
-import InputSearch from "./component/InputSearch";
+import Header from "./component/Header";
+import Footer from "./component/Footer";
 
 function App() {
   return (
-    <div className="mx-2 my-7 d-flex gap-4">
-      <Button>DashBorrd</Button>
-      <InputSearch
-        className="w-[430px] h-12"
-        placeholder="Tìm kiếm khách sạn ..."
-        iconBefore={false}
-      />
-    </div>
+    <React.Fragment>
+      <Header />
+      <div className="bg-slate-100 h-[100vh]">
+      </div>
+      <Footer />
+    </React.Fragment>
   );
 }
 

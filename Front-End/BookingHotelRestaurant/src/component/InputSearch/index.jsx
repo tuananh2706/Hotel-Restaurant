@@ -3,8 +3,8 @@ import SearchIcon from "../../assets/icons/searchIcon";
 
 function Input({ iconBefore = true, onClick, className, ...rest }) {
   const [isFocus, setIsFocus] = useState(false);
-  let positionIcon;
-  let realClass;
+  let positionIcon = "";
+  let realClass = "";
   if (iconBefore) {
     positionIcon = "left-4";
     realClass = "pl-[50px]";
@@ -14,7 +14,7 @@ function Input({ iconBefore = true, onClick, className, ...rest }) {
   }
 
   return (
-    <div className={`relative d-flex items-center ${className}`}>
+    <div className={`relative flex items-center ${className}`}>
       <input
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
@@ -23,7 +23,7 @@ function Input({ iconBefore = true, onClick, className, ...rest }) {
       />
       <button
         onClick={() => {
-          onClick();
+          onClick && onClick();
         }}
         className={`absolute top-[35%] ${positionIcon}`}
       >
