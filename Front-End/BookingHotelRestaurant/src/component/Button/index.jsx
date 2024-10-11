@@ -1,9 +1,5 @@
 function Button({ children, variant = "default", ...rest }) {
   let realClass;
-  switch (variant) {
-    case "default":
-      realClass = "";
-  }
 
   return (
     <button
