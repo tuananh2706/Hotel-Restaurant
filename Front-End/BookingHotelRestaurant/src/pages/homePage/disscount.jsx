@@ -19,10 +19,10 @@ function Disscount({ datas }) {
         {imgUrl &&
           imgUrl.map((item, index) => {
             return (
-              <a key={index} className="h-[300px]">
+              <a key={index} className="h-[300px] cursor-pointer overflow-hidden relative group">
                 <img
                   src={item}
-                  className="h-full object-cover rounded-[20px]"
+                  className="h-full w-full object-cover rounded-[20px] group-hover:scale-105 group-hover:shadow-lg transition-all duration-200"
                 />
               </a>
             );
