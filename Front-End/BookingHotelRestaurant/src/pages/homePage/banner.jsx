@@ -36,7 +36,7 @@ function Banner() {
           variant="secondary"
           className={"text-[14px] w-[104px] h-[60px] rounded-lg"}
         >
-          Tìm bàn
+          Tìm phòng
         </Button>
       </div>
     </section>

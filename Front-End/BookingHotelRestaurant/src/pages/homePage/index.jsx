@@ -7,7 +7,10 @@ import Banner from "./banner";
 import ListingCard from "./listingCard";
 import Category from "./category";
 import Disscount from "./disscount";
-
+import Demo1 from "../../assets/img/disscount/demo1.jpg";
+import Demo2 from "../../assets/img/disscount/demo2.jpg";
+import Demo3 from "../../assets/img/disscount/demo3.jpg";
+import Demo4 from "../../assets/img/disscount/demo4.jpg";
 function HomePage() {
   const datas = {
     title: "Khách sạn nổi bật",
@@ -126,12 +129,7 @@ function HomePage() {
 
   const disscount = {
     title: "Phòng rẻ giá hời",
-    imgUrl: [
-      "https://cdn1.ivivu.com/images/2023/06/02/18/S(2)2631___tpz29i____horizontal-800x450.webp?o=png",
-      "https://cdn1.ivivu.com/images/2023/06/02/18/S(2)2631___tpz29i____horizontal-800x450.webp?o=png",
-      "https://cdn1.ivivu.com/images/2023/06/02/18/S(2)2631___tpz29i____horizontal-800x450.webp?o=png",
-      "https://cdn1.ivivu.com/images/2023/06/02/18/S(2)2631___tpz29i____horizontal-800x450.webp?o=png",
-    ],
+    imgUrl: [Demo1, Demo2, Demo3, Demo4],
   };
   return (
     <div className="w-[1440px] px-10 mt-5 flex items-center flex-col">
