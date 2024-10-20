@@ -5,7 +5,7 @@ function Text({ className, size="sm", children, ...rest }) {
         case "md" : realSize = "text-[22px]"; break;
     }
   return (
-    <p className={`text-primary text- ${className} ${size}`} {...rest}>
+    <p className={`text-primary ${className} ${size}`} {...rest}>
       {children}
     </p>
   );

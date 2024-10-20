@@ -20,3 +20,5 @@ function ArrDownIcon({ color = "#292D32", width = "24", height = "24" }) {
 }
 
 export default ArrDownIcon;
+
+

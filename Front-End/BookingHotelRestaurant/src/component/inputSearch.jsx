@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SearchIcon from "../assets/icons/searchIcon";
 
-function Input({ iconBefore, onClick, className, ...rest }) {
+function Input({ icon = true, iconBefore, onClick, className, ...rest }) {
   const [isFocus, setIsFocus] = useState(false);
   return (
     <div className={`relative flex items-center ${className}`}>
@@ -19,9 +19,11 @@ function Input({ iconBefore, onClick, className, ...rest }) {
         }}
         className={`absolute top-[35%] ${iconBefore ? "left-4" : "right-4"}`}
       >
-        {isFocus !== undefined && (
-          <SearchIcon color={isFocus ? "#007E47" : "#C5C5C5"} />
-        )}
+        {icon
+          ? isFocus !== undefined && (
+              <SearchIcon color={isFocus ? "#007E47" : "#C5C5C5"} />
+            )
+          : ""}
       </button>
     </div>
   );

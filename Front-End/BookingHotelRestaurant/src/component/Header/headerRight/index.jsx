@@ -8,27 +8,27 @@ import ArrDownIcon from "../../../assets/icons/arrowDownIcon";
 import InputCheckItem from "../../inputCheckItem";
 
 function HeaderRight() {
-  const [selectedLocation, setSelectedLocation] = useState("Q.Gò Vấp");
+  const [selectedLocation, setSelectedLocation] = useState("Gò Vấp");
   const [openModalLocation, setOpenModalLocation] = useState(false);
   const [tempSelected, setTempSelected] = useState(selectedLocation);
 
   const locationArr = [
-    "Q.Gò Vấp",
-    "Quận 1",
-    "Quận 2",
-    "Quận 3",
-    "Quận 4",
-    "Quận 5",
-    "Quận 6",
-    "Quận 7",
-    "Quận 8",
-    "Quận 9",
-    "Quận 10",
-    "Quận 11",
-    "Quận 12",
-    "Q.Bình Thạnh",
-    "Quận Tân Phú",
-    "Quận Tân Bình",
+    "Gò Vấp",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "Bình Thạnh",
+    "Tân Phú",
+    "Tân Bình",
   ];
 
   const openLocation = () => {
@@ -63,7 +63,7 @@ function HeaderRight() {
           }}
         >
           <span className="block mt-2 text-xs text-gray-500">Vị trí</span>
-          <span className="text-sm font-nomal">{`${selectedLocation}, Tp.HCM`}</span>
+          <span className="text-sm font-nomal">{`Q.${selectedLocation}, Tp.HCM`}</span>
         </div>
         <div className="absolute top-[30%] right-2">
           <ArrDownIcon />
@@ -94,7 +94,7 @@ function HeaderRight() {
                   name="location"
                   value={item}
                   checked={tempSelected === item}
-                  content={item}
+                  content={item === "Bình Thạnh" ? `Q.${item}` : `Quận ${item}`}
                   onChange={() => {
                     setTempSelected(item);
                   }}
@@ -103,10 +103,18 @@ function HeaderRight() {
             })}
         </div>
         <div className="flex items-center justify-end mt-5 gap-2">
-          <Button variant="secondary" className={"px-5 py-2"} onClick={handleSaveLocation}>
+          <Button
+            variant="secondary"
+            className={"px-5 py-2"}
+            onClick={handleSaveLocation}
+          >
             Save
           </Button>
-          <Button variant="outline" className={"px-5 py-2"} onClick={closeLocation}>
+          <Button
+            variant="outline"
+            className={"px-5 py-2"}
+            onClick={closeLocation}
+          >
             Cancel
           </Button>
         </div>
