@@ -132,7 +132,7 @@ function HomePage() {
     imgUrl: [Demo1, Demo2, Demo3, Demo4],
   };
   return (
-    <div className="w-[1440px] px-10 mt-5 flex items-center flex-col">
+    <div className="w-full lg:w-[1440px] px-10 mt-5 flex items-center flex-col">
       <Banner />
       <div className="w-[1300px] flex flex-col gap-10 mb-16">
         <ListingCard datas={datas} />

@@ -11,8 +11,8 @@ function App() {
     <React.Fragment>
       <Header />
       <div className="bg-slate-100 flex justify-center ">
-        {/* <HomePage /> */}
-        <ProfilePage />
+        <HomePage />
+        {/* <ProfilePage /> */}
       </div>
       <Footer />
     </React.Fragment>

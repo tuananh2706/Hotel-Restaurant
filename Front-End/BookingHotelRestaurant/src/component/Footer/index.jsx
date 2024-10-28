@@ -34,8 +34,8 @@ function Footer() {
   ];
   return (
     <footer className="w-[100%] h-[320px] bg-[#004225] flex flex-col items-center justify-center text-white gap-8">
-      <h6 className="text-5xl font-architectsDaughter">My Logo</h6>
-      <p className="text-4xl font-architectsDaughter">
+      <h6 className="text-4xl md:text-5xl font-architectsDaughter">My Logo</h6>
+      <p className="text-base md:text-4xl font-architectsDaughter">
         Connect with Us and Explore
       </p>
       <div className="flex gap-8">
@@ -48,7 +48,7 @@ function Footer() {
           );
         })}
       </div>
-      <p className="border-b-2 pb-2 border-gray-600 text-gray-200 text-sm italic tracking-wider">Hoặc liên hệ với sdt: 098.xxx.xxx | email: trung.nguyen99319@gmail.com </p>
+      <p className="border-b-2 pb-2 border-gray-600 text-center text-gray-200 text-sm italic tracking-wider">Hoặc liên hệ với sdt: 098.xxx.xxx | email: trung.nguyen99319@gmail.com </p>
     </footer>
   );
 }

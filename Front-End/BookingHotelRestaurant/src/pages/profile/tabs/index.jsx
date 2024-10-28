@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import Favourite from "./favourite";
 import Booking from "./booking";
 import Payment from "./payment";
-import Setting from "./setting";
 import ReviewRaiting from "./reviewRaiting";
 import SavedAddress from "./savedAddress";
+import LogoutIcon from "../../../assets/icons/logoutIcon";
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -14,7 +14,6 @@ const Tabs = () => {
     { label: "Yêu thích", content: <Favourite /> },
     { label: "Booking", content: <Booking /> },
     { label: "Thanh toán", content: <Payment /> },
-    { label: "Cài đặt", content: <Setting /> },
     { label: "Đánh giá", content: <ReviewRaiting /> },
     { label: "Địa chỉ đã lưu", content: <SavedAddress /> },
   ];
@@ -28,7 +27,7 @@ const Tabs = () => {
   return (
     <div className="flex gap-[30px] mt-4">
       {/* Tabs Sidebar */}
-      <div className="w-[250px] px-[23px] h-[468px] flex flex-col items-center py-9 bg-white p-4 rounded-2xl">
+      <div className="w-[250px] px-[23px] flex flex-col items-center py-9 bg-white p-4 rounded-2xl">
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -43,6 +42,13 @@ const Tabs = () => {
             {tab.label}
           </button>
         ))}
+        <button
+          className="mt-10 text-danger flex gap-2 items-center justify-center w-full
+         hover:opacity-80  transition-all duration-50"
+        >
+          <LogoutIcon color="#C5270E" size="20" />
+          Đăng xuất
+        </button>
       </div>
 
       {/* Tab Content */}

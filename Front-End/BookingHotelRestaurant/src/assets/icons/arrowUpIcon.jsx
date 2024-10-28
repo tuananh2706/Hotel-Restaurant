@@ -1,4 +1,4 @@
-function ArrDownIcon({ color = "#004225", size = "24" }) {
+function ArrowUpIcon({ color = "#004225", size = "24" }) {
   return (
     <svg
       width={size}
@@ -8,7 +8,7 @@ function ArrDownIcon({ color = "#004225", size = "24" }) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M19.9201 8.95L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.95"
+        d="M19.9201 15.05L13.4001 8.53C12.6301 7.76 11.3701 7.76 10.6001 8.53L4.08008 15.05"
         stroke={color}
         strokeWidth="1.5"
         strokeMiterlimit="10"
@@ -19,4 +19,4 @@ function ArrDownIcon({ color = "#004225", size = "24" }) {
   );
 }
 
-export default ArrDownIcon;
+export default ArrowUpIcon;

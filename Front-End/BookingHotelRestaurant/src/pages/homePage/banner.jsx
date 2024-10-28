@@ -1,5 +1,5 @@
 import imgBanner from "../../assets/img/banner.png";
-import Input from "../../component/InputSearch";
+import Input from "../../component/inputSearch";
 import Button from "../../component/myButton";
 
 function Banner() {
@@ -7,9 +7,12 @@ function Banner() {
     <section className="flex justify-center flex-col items-center relative mb-24">
       <img
         src={imgBanner}
-        className="max-w-[1440px] w-full h-[550px] bg-cover shadow-sm rounded-sm"
+        className=" w-full h-[288px] md:h-[550px] bg-cover shadow-sm rounded-sm"
       />
-      <div className="flex items-center p-[40px] justify-evenly w-[1300px] h-[140px] bg-primary absolute bottom-[-70px] rounded-[20px] shadow shadow-primary">
+      <form
+        action="#"
+        className="flex items-center p-[40px] justify-evenly w-full md:w-[1300px] h-[368px] md:h-[140px] bg-primary absolute bottom-[-70px] rounded-[20px] shadow shadow-primary"
+      >
         <div className="w-[617px] h-[60px] bg-white rounded-lg borer border-seconGray flex items-center justify-between">
           <input
             type="date"
@@ -38,7 +41,7 @@ function Banner() {
         >
           Tìm phòng
         </Button>
-      </div>
+      </form>
     </section>
   );
 }

@@ -3,6 +3,8 @@ import Title from "../../../component/text/titleCategory";
 import Input from "../../../component/inputSearch";
 import Button from "../../../component/myButton";
 import PaymentcardIcon from "../../../assets/icons/paymentcard";
+import ArrowUpIcon from "../../../assets/icons/arrowUpIcon";
+import ArrDownIcon from "../../../assets/icons/arrowDownIcon";
 
 function Payment() {
   const [toggleVisa, settoggleVisa] = useState(false);
@@ -20,10 +22,13 @@ function Payment() {
       >
         <a
           onClick={() => settoggleVisa((prev) => !prev)}
-          className="w-full cursor-pointer flex gap-2 items-center"
+          className="w-full cursor-pointer flex gap-2 items-center relative active:opacity-70 transition-opacity duration-150"
         >
           <PaymentcardIcon size="20" />
           <p className="text-base text-gray-800 ">Thẻ tín dụng / thẻ ghi nợ</p>
+          <div className="absolute right-0">
+            {toggleVisa ? <ArrowUpIcon size="20" /> : <ArrDownIcon size="20" />}
+          </div>
         </a>
         {toggleVisa && (
           <form action="#" className="flex flex-col gap-4">
@@ -34,7 +39,9 @@ function Payment() {
               <Input className={"w-full"} icon={false} />
             </div>
             <div>
-              <Button variant="secondary" className={"float-right w-[147px]"}>Lưu chi tiết</Button>
+              <Button variant="secondary" className={"float-right w-[147px] text-xs h-12"}>
+                Lưu chi tiết
+              </Button>
             </div>
           </form>
         )}
@@ -45,11 +52,17 @@ function Payment() {
           toggleOther ? "h-[188px]" : "h-[60px]"
         } overflow-hidden`}
       >
-        <a className=" w-full cursor-pointer flex items-center gap-2" onClick={() => setToggleOther((prev) => !prev)}>
+        <a
+          className=" w-full cursor-pointer flex items-center relative gap-2"
+          onClick={() => setToggleOther((prev) => !prev)}
+        >
           <PaymentcardIcon size="20" />
-          <p className="text-base text-gray-800">
+          <p className="text-base text-gray-800 active:opacity-70 transition-opacity duration-150">
             Phương thức ví điện tử
           </p>
+          <div className="absolute right-0">
+            {toggleOther ? <ArrowUpIcon size="20" /> : <ArrDownIcon size="20" />}
+          </div>
         </a>
         {toggleOther && (
           <form action="#" className="flex flex-col gap-4">
@@ -70,7 +83,9 @@ function Payment() {
               />
             </div>
             <div>
-              <Button variant="secondary" className={"float-right w-[147px]"}>Lưu thay đổi</Button>
+              <Button variant="secondary" className={"float-right w-[147px] text-xs h-12"}>
+                Lưu chi tiết
+              </Button>
             </div>
           </form>
         )}
