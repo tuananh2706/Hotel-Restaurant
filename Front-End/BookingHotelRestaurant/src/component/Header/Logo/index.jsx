@@ -1,11 +1,17 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Logo() {
-  return <React.Fragment>
-    <a href="#" className="no-underline text-nowrap font-architectsDaughter text-2xl text-primary">
+  return (
+    <React.Fragment>
+      <Link
+        to={"/"}
+        className="no-underline text-nowrap font-architectsDaughter text-2xl text-primary"
+      >
         My Logo
-    </a>
-  </React.Fragment>;
+      </Link>
+    </React.Fragment>
+  );
 }
 
 export default Logo;

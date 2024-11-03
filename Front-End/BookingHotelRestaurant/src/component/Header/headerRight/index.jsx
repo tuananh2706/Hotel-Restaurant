@@ -6,11 +6,23 @@ import NotifficationIcon from "../../../assets/icons/notiffication";
 import LocationIcon from "../../../assets/icons/locationIcon";
 import ArrDownIcon from "../../../assets/icons/arrowDownIcon";
 import InputCheckItem from "../../inputCheckItem";
+import DropDown from "../../cards/dropdown";
+import Notification from "./notification";
+import DropDownProfile from "./dropdownProfile";
 
 function HeaderRight() {
   const [selectedLocation, setSelectedLocation] = useState("Gò Vấp");
   const [openModalLocation, setOpenModalLocation] = useState(false);
   const [tempSelected, setTempSelected] = useState(selectedLocation);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenProfile, setIsOpenProfile] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
+  };
+  const toggleDropdownProfile = () => {
+    setIsOpenProfile((prev) => !prev);
+  };
 
   const locationArr = [
     "Gò Vấp",
@@ -70,11 +82,17 @@ function HeaderRight() {
         </div>
       </div>
       {/* Notification */}
-      <Button className="w-12 h-12">
+      <Button
+        className={`w-12 h-12 ${isOpen && "opacity-80"}`}
+        onClick={toggleDropdown}
+      >
         <NotifficationIcon color="white" width="20" height="20" />
       </Button>
       {/* User */}
-      <Button className="w-12 h-12">
+      <Button
+        className={`w-12 h-12 ${isOpenProfile && "opacity-80"}`}
+        onClick={toggleDropdownProfile}
+      >
         <UserIcon color="white" width="20" height="20" />
       </Button>
 
@@ -114,12 +132,28 @@ function HeaderRight() {
             variant="outline"
             className={"px-5 py-2"}
             onClick={closeLocation}
-            
           >
             Cancel
           </Button>
         </div>
       </Modal>
+      <DropDown
+        width={348}
+        height={340}
+        isOpen={isOpen}
+        onClose={toggleDropdown}
+        className={"top-[76px] right-40"}
+      >
+        <Notification />
+      </DropDown>
+      <DropDown
+        width={250}
+        isOpen={isOpenProfile}
+        onClose={toggleDropdownProfile}
+        className={"top-[76px] right-24"}
+      >
+        <DropDownProfile closeDropDown={toggleDropdownProfile} />
+      </DropDown>
     </div>
   );
 }

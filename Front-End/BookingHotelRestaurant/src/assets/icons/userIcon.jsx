@@ -1,4 +1,4 @@
-function UserIcon({ color = "#292D32", size="24" }) {
+function UserIcon({ color = "#004225", size="24" }) {
   return (
     <svg
       width={size}

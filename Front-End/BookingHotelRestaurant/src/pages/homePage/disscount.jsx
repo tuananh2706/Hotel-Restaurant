@@ -6,11 +6,11 @@ function Disscount({ datas }) {
   const { title, imgUrl } = datas;
   return (
     <div className="relative">
-      <Title className={"mb-7"}>{title}</Title>
+      <Title className={"mb-7 text-[28px]"}>{title}</Title>
       <a
         className="text-textGray text-base font-medium underline
          underline-offset-2 cursor-pointer hover:text-secondary
-         hover:-translate-y-1 transition-all duration-200 absolute right-0 top-12"
+         hover:-translate-y-1 transition-all duration-200 absolute right-0 top-8"
       >
         Xem tất cả
         <KeyboardDoubleArrowRightIcon />

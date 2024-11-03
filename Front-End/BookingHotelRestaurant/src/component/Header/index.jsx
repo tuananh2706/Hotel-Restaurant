@@ -4,7 +4,7 @@ import HeaderRight from "./headerRight";
 
 function Header() {
   return (
-    <header className="h-[88px] flex justify-center shadow-lg">
+    <header className="h-[88px] flex justify-center shadow-lg fixed top-0 left-0 right-0 z-50 bg-white">
       <div className="h-[100%] px-10 lg:max-w-[1440px] w-[100%] flex items-center justify-between">
         <Logo />
         <InputSearch
