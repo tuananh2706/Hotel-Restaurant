@@ -1,4 +1,12 @@
-function DropDown({ width, height, children, isOpen, onClose, className }) {
+function DropDown({
+  width,
+  height,
+  children,
+  isOpen,
+  onClose,
+  className,
+  appear = "top right",
+}) {
   return (
     <>
       {isOpen && (
@@ -11,7 +19,7 @@ function DropDown({ width, height, children, isOpen, onClose, className }) {
         style={{
           height: `${height}px`,
           width: `${width}px`,
-          transformOrigin: "top right",
+          transformOrigin: `${appear}`,
         }}
         className={`absolute bg-white shadow-sm border-seconGray border z-10 px-2 rounded-xl ${className} 
         transition-all duration-200 ease-in-out transform ${

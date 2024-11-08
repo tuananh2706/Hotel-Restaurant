@@ -44,24 +44,26 @@ function Favourite() {
   ];
 
   return (
-    <div className="flex flex-col gap-6 ">
-      <div className="flex justify-between items-center">
+    <div className="flex flex-col gap-6 p-2 lg:p-0 ">
+      <div className="flex flex-col md:flex-row gap-5 md:gap-0 justify-between items-center">
         <Title className={"text-[28px] font-medium"}>Khách Sạn Yêu Thích</Title>
         <Input
           placeholder="Tìm kiếm khách sạn yêu thích ...."
           className={"w-[281px] h-[42px]"}
         />
       </div>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {demoData &&
           demoData.map((item, index) => {
-           return <HotelPreview
-              key={index}
-              title={item.hotelName}
-              thumbnail={item.hotelThumbnail}
-              localtion={item.localtion}
-              category = {item.category}
-            />;
+            return (
+              <HotelPreview
+                key={index}
+                title={item.hotelName}
+                thumbnail={item.hotelThumbnail}
+                localtion={item.localtion}
+                category={item.category}
+              />
+            );
           })}
       </div>
     </div>

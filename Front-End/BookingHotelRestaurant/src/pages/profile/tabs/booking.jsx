@@ -43,17 +43,14 @@ function Booking() {
   const booking = demoData.filter((item) => item.status === 0);
 
   return (
-    <div>
+    <div className="p-2 lg:p-0">
       <div className="flex flex-col gap-6">
-        <div className="flex justify-between items-center">
-          <Title className={"text-[28px] font-medium"}>Booking</Title>
-          <Input placeholder="Tìm kiếm khách sạn" className={"w-[281px]"} />
-        </div>
+        <Title className={"text-[28px] font-medium text-center lg:text-left"}>Booking</Title>
         {booking &&
           booking.map((item) => <BookingHotel key={item.id} obj={item} />)}
       </div>
       <div className="mt-5 grid gap-6">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center">
           <Title className={"text-[28px] font-medium"}>Lịch sử booking</Title>
           <Input placeholder="Tìm kiếm khách sạn" className={"w-[281px]"} />
         </div>

@@ -11,7 +11,11 @@ import Demo1 from "../../assets/img/disscount/demo1.jpg";
 import Demo2 from "../../assets/img/disscount/demo2.jpg";
 import Demo3 from "../../assets/img/disscount/demo3.jpg";
 import Demo4 from "../../assets/img/disscount/demo4.jpg";
+import { motion } from "framer-motion";
+import useDelayedRender from "../../hook/useDelayedRender";
 function HomePage() {
+  const delayRender = useDelayedRender();
+
   const datas = {
     title: "Khách sạn nổi bật",
     data: [
@@ -131,11 +135,26 @@ function HomePage() {
     title: "Phòng rẻ giá hời",
     imgUrl: [Demo1, Demo2, Demo3, Demo4],
   };
+  if (!delayRender)
+    return (
+      <div className="w-full h-screen lg:w-[1440px] px-4 sm:px-10 mt-5 flex items-center flex-col"></div>
+    );
+
   return (
-    <div className="w-full lg:w-[1440px] px-10 mt-5 flex items-center flex-col">
-      <Banner />
-      <div className="w-[1300px] flex flex-col gap-10 mb-16">
-        <ListingCard datas={datas} />
+    <div className="w-full lg:w-[1440px] px-4 sm:px-10 mt-5 flex items-center flex-col">
+      <motion.div
+        className="fade-in-section"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+      >
+        <Banner />
+      </motion.div>
+
+      <div className="w-full lg:w-[1300px] flex flex-col mt-52 md:mt-0 gap-10 mb-16">
+        <ListingCard datas={datas} className={"mt-4 lg:mt-0"} />
         <Category datas={category} />
         <ListingCard datas={datasNear} seeAll />
         <Disscount datas={disscount} />

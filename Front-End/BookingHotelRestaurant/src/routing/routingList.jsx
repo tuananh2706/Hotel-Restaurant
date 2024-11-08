@@ -7,6 +7,8 @@ import Booking from "../pages/profile/tabs/booking";
 import Payment from "../pages/profile/tabs/payment";
 import ReviewRaiting from "../pages/profile/tabs/reviewRaiting";
 import SavedAddress from "../pages/profile/tabs/savedAddress";
+import LoginPage from "../pages/auth/login";
+import RegisterPage from "../pages/auth/register";
 
 const router = createBrowserRouter([
   {
@@ -14,14 +16,18 @@ const router = createBrowserRouter([
     element: <PageLayout />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <HomePage />,
       },
       {
-        path: "/profile",
+        path: "profile",
         element: <ProfilePage />,
         children: [
-          { path: "", element: <Favourite /> },
+          {
+            path: "",
+            element: <Favourite />,
+          },
+          { path: "favorite", element: <Favourite /> },
           {
             path: "booking",
             element: <Booking />,
@@ -39,6 +45,14 @@ const router = createBrowserRouter([
             element: <SavedAddress />,
           },
         ],
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
       },
     ],
   },

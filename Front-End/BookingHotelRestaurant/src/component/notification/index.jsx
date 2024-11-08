@@ -3,8 +3,11 @@ import Lock from "../../assets/icons/lock";
 import Calendar from "../../assets/icons/time";
 import Timer from "../../assets/icons/timer";
 import UserEdit from "../../assets/icons/user-edit";
+import useScreenWithResize from "../../hook/useScreenWithResize";
 
 function NotificationItem({ type = "bookingSuccess" }) {
+  const screenWidth = useScreenWithResize();
+  const isMobile = screenWidth < 769;
   let realType = {
     title: "",
     des: "",
@@ -63,11 +66,14 @@ function NotificationItem({ type = "bookingSuccess" }) {
   return (
     <div className="p-4 w-full border-b border-seconGray">
       <div className="flex h-[46px] gap-[14px]">
-        <div
-          className={`${realType.bgColor} flex items-center justify-center rounded-full w-[46px] h-full`}
-        >
-          {realType.icon}
-        </div>
+        {!isMobile && (
+          <div
+            className={`${realType.bgColor} flex items-center justify-center rounded-full w-[46px] h-full`}
+          >
+            {realType.icon}
+          </div>
+        )}
+
         <div
           className={`flex flex-col  ${realType.textColor} justify-between overflow-hidden`}
         >

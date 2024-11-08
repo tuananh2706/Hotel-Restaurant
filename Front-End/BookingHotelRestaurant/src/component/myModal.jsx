@@ -9,7 +9,6 @@ const Modal = ({
   title = "",
   closeBtn,
 }) => {
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -18,19 +17,19 @@ const Modal = ({
     };
 
     const handleFocus = (e) => {
-      if(isOpen && !e.target.closest(".modal-content")){
+      if (isOpen && !e.target.closest(".modal-content")) {
         e.target.blur(); //hủy focus
       }
-    }
+    };
     if (isOpen) {
       window.addEventListener("keydown", handleKeyDown);
       window.addEventListener("focusin", handleFocus);
     }
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("focusin", handleFocus)
+      window.removeEventListener("focusin", handleFocus);
     };
-  }, [isOpen, onClose]); 
+  }, [isOpen, onClose]);
   // sử dụng useEffect để xử lý sự kiện ấn nút để thoát.
   return (
     <div
@@ -57,7 +56,11 @@ const Modal = ({
             <CloseCircleIcon />
           </button>
         )}
-        {title && <h2 className="text-xl font-bold mb-4 border-b-2 p-2 border-slate-200 ">{title}</h2>}
+        {title && (
+          <h2 className="text-xl font-bold mb-4 border-b-2 p-2 border-slate-200 ">
+            {title}
+          </h2>
+        )}
         {children}
       </div>
     </div>

@@ -1,4 +1,4 @@
-function GmailIcon({size = "100"}) {
+function GmailIcon({size = "24"}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

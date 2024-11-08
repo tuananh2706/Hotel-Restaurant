@@ -5,7 +5,7 @@ import Title from "../../../component/text/titleCategory";
 
 function SavedAddress() {
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-8 p-2 lg:p-0">
       <Title className={"text-[28px] font-medium"}>Thay đổi địa chỉ</Title>
       <form action="#" className="w-full bg-white p-5 rounded-xl grid gap-4">
         <h5 className="text-base font-medium text-gray-900 flex gap-2">

@@ -1,4 +1,4 @@
-function LocationIcon({ color = "#292D32", size="24" }) {
+function LocationIcon({ color = "#004225", size="24" }) {
   return (
     <svg
       width={size}
