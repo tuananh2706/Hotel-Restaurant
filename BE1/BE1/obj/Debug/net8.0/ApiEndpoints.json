@@ -205,6 +205,95 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BE1.Controllers.FavoriteHotelsController",
+    "Method": "AddFavoriteHotel",
+    "RelativePath": "api/FavoriteHotels",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BE1.Request.FavoriteHotelRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BE1.DTOs.FavoriteHotelDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE1.Controllers.FavoriteHotelsController",
+    "Method": "GetFavoriteHotel",
+    "RelativePath": "api/FavoriteHotels/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BE1.DTOs.FavoriteHotelDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BE1.Controllers.FavoriteHotelsController",
+    "Method": "UpdateFavoriteHotel",
+    "RelativePath": "api/FavoriteHotels/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "BE1.Request.FavoriteHotelRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BE1.Controllers.FavoriteHotelsController",
+    "Method": "DeleteFavoriteHotel",
+    "RelativePath": "api/FavoriteHotels/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Hotel.Controllers.HotelController",
     "Method": "CreateHotel",
     "RelativePath": "api/Hotel",

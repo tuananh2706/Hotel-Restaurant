@@ -93,7 +93,9 @@ namespace Hotel.Controllers
                         //Return thằng không cần tạo lại.
                         return Ok(new
                         {
-                            Token = token,
+                            accessToken = token,
+                            refreshToken = refreshToken.Token,
+                            ExpiryDate = refreshToken.ExpiryDate,
                             Account = new AccountRequest
                             {
                                 AccountName = account.AccountName,
@@ -115,33 +117,18 @@ namespace Hotel.Controllers
 
                     _context.RefreshTokens.Update(refreshToken);
                     await _context.SaveChangesAsync();
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddDays(7)
-                    };
-                    Response.Cookies.Append("RefreshToken", refreshToken.Token, cookieOptions);
                 }
                 //Trường hợp chưa có RefreshToken
                 else
                 {
                     refreshToken = GenerateRefreshToken(account.AccountName);
                     await SaveRefreshToken(account.AccountName, refreshToken);
-
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddDays(7)
-                    };
-                    Response.Cookies.Append("RefreshToken", refreshToken.Token, cookieOptions);
                 };
                 return Ok(new
                 {
-                    Token = token,
+                    accsessToken = token,
+                    refreshToken = refreshToken.Token,
+                    ExpiryDate = refreshToken.ExpiryDate,
                     Account = new AccountRequest
                     {
                         AccountName = account.AccountName,
@@ -216,19 +203,24 @@ namespace Hotel.Controllers
                     return Unauthorized("Thông tin người dùng không hợp lệ.");
                 }
 
+                var token = GenerateJwtToken(user);
+
                 // Trả về thông tin người dùng nếu tìm thấy
                 return Ok(new
                 {
-                    AccountName = user.AccountName,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Phone = user.Phone,
-                    Role = user.Role,
-                    AvatarUrl = user.AvatarUrl,
-                    CreatedAt = user.CreatedAt,
-                    BirthDate = user.BirthDate,
-                    Nationality = user.Nationality
+                    token = token,
+                    user = new AccountRequest{
+                        AccountName = user.AccountName,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Phone = user.Phone,
+                        Role = user.Role,
+                        AvatarUrl = user.AvatarUrl,
+                        CreatedAt = user.CreatedAt,
+                        BirthDate = user.BirthDate,
+                        Nationality = user.Nationality
+                    }
                 });
             }
             catch (Exception ex)
@@ -241,6 +233,7 @@ namespace Hotel.Controllers
 
         //Tạo tài khoản admin
         [HttpPost("registerAdmin")]
+        //[Authorize(Roles ="admin")]
         public async Task<IActionResult> registerAdmin([FromBody] RegisterRequest request)
         {
             try
@@ -280,6 +273,7 @@ namespace Hotel.Controllers
 
 
         // Cập nhật thông tin tài khoản (PUT)
+        [Authorize]
         [HttpPut("{accountName}")]
         public IActionResult UpdateAccount(string accountName, [FromBody] UpdateAccountRequest request)
         {
@@ -295,7 +289,6 @@ namespace Hotel.Controllers
             account.LastName = request.LastName;
             account.Email = request.Email;
             account.Phone = request.Phone;
-            account.Role = request.Role;
             account.AvatarUrl = request.AvatarUrl;
             account.BirthDate = request.BirthDate;
             account.Nationality = request.Nationality;
@@ -304,22 +297,11 @@ namespace Hotel.Controllers
             _context.Accounts.Update(account);
             _context.SaveChanges();
 
-            return Ok(new AccountRequest
-            {
-                AccountName = account.AccountName,
-                FirstName = account.FirstName,
-                LastName = account.LastName,
-                Email = account.Email,
-                Phone = account.Phone,
-                Role = account.Role,
-                AvatarUrl = account.AvatarUrl,
-                CreatedAt = account.CreatedAt,
-                BirthDate = account.BirthDate,
-                Nationality = account.Nationality
-            });
+            return Ok("Your change Information completed");
         }
 
         // Thay đổi mật khẩu (PUT)
+        [Authorize]
         [HttpPut("{accountName}/changepassword")]
         public IActionResult ChangePassword(string accountName, [FromBody] ChangePasswordRequest request)
         {
@@ -347,6 +329,7 @@ namespace Hotel.Controllers
         }
 
         // Xóa tài khoản (DELETE)
+        [Authorize(Roles ="admin")]
         [HttpDelete("{accountName}")]
         public IActionResult DeleteAccount(string accountName)
         {

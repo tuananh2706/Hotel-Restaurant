@@ -3,5 +3,6 @@
     public class RefreshTokenRequest
     {
         public string AccountName { get; set; }
+        public string refreshToken { get; set; }
     }
 }

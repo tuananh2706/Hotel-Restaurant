@@ -1,26 +1,30 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\document\\BE1\\BE1\\",
+  "WorkspaceRootPath": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\document\\be1\\be1\\be1\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\documentforpin\\be\\hotel-restaurant\\be1\\be1\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\document\\be1\\be1\\be1\\models\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\models\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\documentforpin\\be\\hotel-restaurant\\be1\\be1\\request\\accountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\request\\accountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\document\\be1\\be1\\be1\\models\\hotelcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\models\\hotelcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\document\\be1\\be1\\be1\\controllers\\tokencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\documentforpin\\be\\hotel-restaurant\\be1\\be1\\controllers\\tokencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\controllers\\tokencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\document\\be1\\be1\\be1\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\documentforpin\\be\\hotel-restaurant\\be1\\be1\\request\\refreshtokenrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\request\\refreshtokenrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\documentforpin\\be\\hotel-restaurant\\be1\\be1\\be1.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\be1.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|c:\\documentforpin\\be\\hotel-restaurant\\be1\\be1\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2FD518FF-2E5A-4A8C-9391-20870CD0984C}|BE1\\BE1.csproj|solutionrelative:be1\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -29,73 +33,82 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 316,
+          "DockedWidth": 200,
           "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "HotelContext.cs",
-              "DocumentMoniker": "C:\\document\\BE1\\BE1\\BE1\\Models\\HotelContext.cs",
-              "RelativeDocumentMoniker": "BE1\\Models\\HotelContext.cs",
-              "ToolTip": "C:\\document\\BE1\\BE1\\BE1\\Models\\HotelContext.cs",
-              "RelativeToolTip": "BE1\\Models\\HotelContext.cs",
-              "ViewState": "AgIAAFMCAAAAAAAAAAAmwHMCAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-10T18:29:54.867Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Account.cs",
-              "DocumentMoniker": "C:\\document\\BE1\\BE1\\BE1\\Models\\Account.cs",
-              "RelativeDocumentMoniker": "BE1\\Models\\Account.cs",
-              "ToolTip": "C:\\document\\BE1\\BE1\\BE1\\Models\\Account.cs",
-              "RelativeToolTip": "BE1\\Models\\Account.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAkwB8AAAAVAAAAAAAAAA==",
+              "Title": "AccountRequest.cs",
+              "DocumentMoniker": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Request\\AccountRequest.cs",
+              "RelativeDocumentMoniker": "BE1\\Request\\AccountRequest.cs",
+              "ToolTip": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Request\\AccountRequest.cs",
+              "RelativeToolTip": "BE1\\Request\\AccountRequest.cs",
+              "ViewState": "AgIAABAAAABAAAAAAIAnwBcAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-10T18:27:08.948Z",
+              "WhenOpened": "2024-11-14T16:50:22.047Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "RefreshToken.cs",
-              "DocumentMoniker": "C:\\document\\BE1\\BE1\\BE1\\Models\\RefreshToken.cs",
-              "RelativeDocumentMoniker": "BE1\\Models\\RefreshToken.cs",
-              "ToolTip": "C:\\document\\BE1\\BE1\\BE1\\Models\\RefreshToken.cs",
-              "RelativeToolTip": "BE1\\Models\\RefreshToken.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-10T17:49:01.352Z",
-              "EditorCaption": ""
+              "Title": "BE1.csproj",
+              "DocumentMoniker": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj",
+              "RelativeDocumentMoniker": "BE1\\BE1.csproj",
+              "ToolTip": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj",
+              "RelativeToolTip": "BE1\\BE1.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-11-13T09:03:07.04Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "TokenController.cs",
-              "DocumentMoniker": "C:\\document\\BE1\\BE1\\BE1\\Controllers\\TokenController.cs",
-              "RelativeDocumentMoniker": "BE1\\Controllers\\TokenController.cs",
-              "ToolTip": "C:\\document\\BE1\\BE1\\BE1\\Controllers\\TokenController.cs",
-              "RelativeToolTip": "BE1\\Controllers\\TokenController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAgwC8AAAAmAAAAAAAAAA==",
+              "Title": "RefreshTokenRequest.cs",
+              "DocumentMoniker": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Request\\RefreshTokenRequest.cs",
+              "RelativeDocumentMoniker": "BE1\\Request\\RefreshTokenRequest.cs",
+              "ToolTip": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Request\\RefreshTokenRequest.cs",
+              "RelativeToolTip": "BE1\\Request\\RefreshTokenRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAUAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-10T17:50:39.581Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-13T08:59:09.735Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TokenController.cs",
+              "DocumentMoniker": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Controllers\\TokenController.cs",
+              "RelativeDocumentMoniker": "BE1\\Controllers\\TokenController.cs",
+              "ToolTip": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Controllers\\TokenController.cs",
+              "RelativeToolTip": "BE1\\Controllers\\TokenController.cs",
+              "ViewState": "AgIAABkAAAAA/v////8owFwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:58:59.423Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\document\\BE1\\BE1\\BE1\\Controllers\\AccountController.cs",
+              "DocumentMoniker": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "BE1\\Controllers\\AccountController.cs",
-              "ToolTip": "C:\\document\\BE1\\BE1\\BE1\\Controllers\\AccountController.cs*",
-              "RelativeToolTip": "BE1\\Controllers\\AccountController.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAjAAAAAAAAAA==",
+              "ToolTip": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "BE1\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAABABAAAAamZmZmYgwCIBAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-10T14:26:47.12Z",
+              "WhenOpened": "2024-11-13T08:54:06.146Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\appsettings.json",
+              "RelativeDocumentMoniker": "BE1\\appsettings.json",
+              "ToolTip": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\appsettings.json",
+              "RelativeToolTip": "BE1\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAABjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-11-13T08:50:17.367Z"
             }
           ]
         }

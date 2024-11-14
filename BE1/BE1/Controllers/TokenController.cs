@@ -35,7 +35,7 @@ namespace BE1.Controllers
             }
 
             // Lấy refreshToken từ cookie
-            var refreshToken = Request.Cookies["RefreshToken"];
+            var refreshToken = request.refreshToken;
 
             if (string.IsNullOrEmpty(refreshToken))
             {
@@ -81,22 +81,16 @@ namespace BE1.Controllers
                 // Tạo lại JWT mới
                 var newJwtToken = GenerateJwtToken(user);
 
-                // Cập nhật cookie với refresh token mới
-                Response.Cookies.Append("RefreshToken", newRefreshToken.Token, new CookieOptions
-                {
-                    HttpOnly = true, // Chỉ truy cập qua HTTP, không thể truy cập qua JavaScript
-                    Secure = true, // Chỉ gửi qua HTTPS
-                    SameSite = SameSiteMode.Strict, // Đảm bảo cookie chỉ gửi trong các yêu cầu cùng trang
-                    Expires = newRefreshToken.ExpiryDate // Cập nhật thời gian hết hạn
-                });
-
                 // Trả về JWT mới và refresh token mới
                 return Ok(new
                 {
-                    Token = newJwtToken,
                     RefreshToken = newRefreshToken.Token,
+                    Token = newJwtToken,
                     ExpiryDate = newRefreshToken.ExpiryDate
                 });
+
+
+
             }
 
             // Nếu refresh token còn hiệu lực
