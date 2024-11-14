@@ -1,11 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Demo from "../../../assets/img/disscount/demo1.jpg";
 import UserIcon from "../../../assets/icons/userIcon";
 import ReviewIcon from "../../../assets/icons/reviewIcon";
 import KeyIcon from "../../../assets/icons/key";
 import LogoutIcon from "../../../assets/icons/logoutIcon";
+import { useAuth } from "../../../context/authContext";
+import { useEffect, useState } from "react";
 
 function DropDownProfile({ closeDropDown }) {
+  const [handleUser, setHandleUser] = useState({
+    avatarUrl: Demo,
+    accountName: "",
+    role: "",
+  });
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      setHandleUser({
+        accountName: user.accountName,
+        avatarUrl: user.avatarUrl ? user.avatarUrl : Demo,
+        role: user.role,
+      });
+    }
+  }, [user]);
+
   const listItem = [
     { icon: <UserIcon />, link: "/profile", title: "Profile" },
     { icon: <UserIcon />, link: "/profile/booking", title: "Booking" },
@@ -14,11 +33,22 @@ function DropDownProfile({ closeDropDown }) {
   ];
   return (
     <div className="flex flex-col gap-1 px-1 py-2">
-      <div className="flex gap-5 items-center p-4 border-b">
-        <img src={Demo} className="w-12 h-12 rounded-full object-cover" />
+      <div
+        onClick={() => {
+          navigate("/profile");
+          closeDropDown();
+        }}
+        className="flex gap-5 items-center p-4 border-b cursor-pointer hover:bg-seconGray hover:bg-opacity-20 hover:rounded transition-colors duration-100"
+      >
+        <img
+          src={handleUser.avatarUrl}
+          className="w-12 h-12 rounded-full object-cover"
+        />
         <div>
-          <p className="text-base text-primary">Trung Nguyễn</p>
-          <p className="text-seconGray uppercase">User</p>
+          <p className="text-base text-primary uppercase">
+            {handleUser.accountName}
+          </p>
+          <p className="text-seconGray uppercase">{handleUser.role}</p>
         </div>
       </div>
       <div onClick={closeDropDown} className="flex flex-col gap-1 border-b">

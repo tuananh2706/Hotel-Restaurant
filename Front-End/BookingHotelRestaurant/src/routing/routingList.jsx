@@ -9,6 +9,8 @@ import ReviewRaiting from "../pages/profile/tabs/reviewRaiting";
 import SavedAddress from "../pages/profile/tabs/savedAddress";
 import LoginPage from "../pages/auth/login";
 import RegisterPage from "../pages/auth/register";
+import ChangePassword from "../pages/profile/tabs/changePassword";
+import ChangeInformations from "../pages/profile/tabs/changeInformations";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
           {
             path: "addressSaved",
             element: <SavedAddress />,
+          },
+          {
+            path: "changePassword",
+            element: <ChangePassword />,
+          },
+          {
+            path: "changeInformations",
+            element: <ChangeInformations />,
           },
         ],
       },

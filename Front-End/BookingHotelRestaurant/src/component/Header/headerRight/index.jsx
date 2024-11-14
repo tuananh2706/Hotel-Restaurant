@@ -11,6 +11,7 @@ import Notification from "./notification";
 import DropDownProfile from "./dropdownProfile";
 import HaveNotAccount from "./haveNotAccount";
 import useScreenWithResize from "../../../hook/useScreenWithResize";
+import { useAuth } from "../../../context/authContext";
 
 function HeaderRight() {
   const [selectedLocation, setSelectedLocation] = useState("Gò Vấp");
@@ -20,6 +21,7 @@ function HeaderRight() {
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   const screenWidth = useScreenWithResize();
   const isMobile = screenWidth < 769;
+  const { isHavedAccount } = useAuth();
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -144,8 +146,11 @@ function HeaderRight() {
         onClose={toggleDropdown}
         className="top-[76px] right-20 md:right-28 lg:right-40"
       >
-        {/* <HaveNotAccount closeDropdown={toggleDropdown} /> */}
-        <Notification />
+        {isHavedAccount ? (
+          <Notification />
+        ) : (
+          <HaveNotAccount closeDropdown={toggleDropdown} />
+        )}
       </DropDown>
 
       {/* Profile Dropdown */}
@@ -156,8 +161,11 @@ function HeaderRight() {
         onClose={toggleDropdownProfile}
         className="top-[76px] right-5 md:right-14 lg:right-24"
       >
-        {/* <HaveNotAccount closeDropdown={toggleDropdownProfile} /> */}
-        <DropDownProfile closeDropDown={toggleDropdownProfile} />
+        {isHavedAccount ? (
+          <DropDownProfile closeDropDown={toggleDropdownProfile} />
+        ) : (
+          <HaveNotAccount closeDropdown={toggleDropdownProfile} />
+        )}
       </DropDown>
     </div>
   );

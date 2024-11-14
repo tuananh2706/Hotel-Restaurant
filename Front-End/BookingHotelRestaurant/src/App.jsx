@@ -1,11 +1,14 @@
 import React from "react";
 import "./App.css";
 import RoutingPages from "./routing";
+import { GobalProvider } from "./context";
 
 function App() {
   return (
     <React.Fragment>
-      <RoutingPages />
+      <GobalProvider>
+        <RoutingPages />
+      </GobalProvider>
     </React.Fragment>
   );
 }

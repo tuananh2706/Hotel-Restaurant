@@ -11,6 +11,7 @@ import FbIcon from "../../assets/icons/social/fbIcons";
 import GmailNegative from "../../assets/icons/social/gmailNegative";
 import FbNegative from "../../assets/icons/social/fbNegative";
 import useScreenWithResize from "../../hook/useScreenWithResize";
+import { useAuth } from "../../context/authContext";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -20,6 +21,14 @@ function RegisterPage() {
   const [toggleFB, setToggleFB] = useState(false);
   const screenWidth = useScreenWithResize();
   const isTablet = screenWidth <= 1024;
+  const [registerRequest, setRegisterRequest] = useState({
+    userName: "",
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+  });
+  const { register } = useAuth();
 
   if (!isLoaded) return null;
 
@@ -44,6 +53,21 @@ function RegisterPage() {
     }, 1000); // 1000ms tương ứng với `duration` trong `transition`
   };
 
+  const handleChangeValue = (e) => {
+    setRegisterRequest({
+      ...registerRequest,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const completed = await register(registerRequest);
+    if (completed) {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="w-full lg:w-[1360px] mt-5 rounded-xl mb-10 h-[600px] bg-white flex justify-between shadow">
       {/* Sử dụng animatePresence để quản lý việc hiệu ứng exit sẽ được chạy trước khi xóa khỏi dom */}
@@ -63,7 +87,7 @@ function RegisterPage() {
               <Title className={"text-[26px] md:text-[32px] uppercase"}>
                 Bắt đầu với chúng tôi
               </Title>
-              <form className="flex flex-col gap-5">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                 <div>
                   <label
                     htmlFor="userName"
@@ -77,6 +101,8 @@ function RegisterPage() {
                     name="userName"
                     icon={false}
                     placeholder="Nhập tên đăng nhập"
+                    value={registerRequest.userName}
+                    onChange={handleChangeValue}
                   />
                 </div>
                 <div>
@@ -92,6 +118,8 @@ function RegisterPage() {
                     name="email"
                     icon={false}
                     placeholder="Nhập email"
+                    value={registerRequest.email}
+                    onChange={handleChangeValue}
                   />
                 </div>
                 <div>
@@ -107,9 +135,10 @@ function RegisterPage() {
                     name="password"
                     icon={false}
                     placeholder="Nhập mật khẩu"
+                    onChange={handleChangeValue}
                   />
                 </div>
-                <Button variant="secondary" className={"w-full"}>
+                <Button variant="secondary" type="submit" className={"w-full"}>
                   Đăng ký
                 </Button>
               </form>

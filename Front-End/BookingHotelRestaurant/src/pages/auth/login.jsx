@@ -4,7 +4,7 @@ import Title from "../../component/text/titleCategory";
 import bannerLogin from "../../assets/img/bannerLogin.jpg";
 import Button from "../../component/myButton";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useDelayedRender from "../../hook/useDelayedRender";
 import GmailIcon from "../../assets/icons/social/gmailIcon";
 import FbIcon from "../../assets/icons/social/fbIcons";
@@ -12,6 +12,7 @@ import GmailNegative from "../../assets/icons/social/gmailNegative";
 import FbNegative from "../../assets/icons/social/fbNegative";
 import Modal from "../../component/myModal";
 import useScreenWithResize from "../../hook/useScreenWithResize";
+import { useAuth } from "../../context/authContext";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -22,6 +23,11 @@ function LoginPage() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const screenWidth = useScreenWithResize();
   const isTablet = screenWidth <= 1024;
+  const [loginRequest, setLoginRequest] = useState({
+    emailOrUserName: "",
+    password: "",
+  });
+  const { login, user, isHavedAccount } = useAuth();
 
   if (!isLoaded) return null;
 
@@ -44,6 +50,14 @@ function LoginPage() {
     setTimeout(() => {
       navigate(path); // Điều hướng sau khi animation hoàn tất
     }, 1000); // 1000ms tương ứng với `duration` trong `transition`
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const completed = await login(loginRequest);
+    if (completed) {
+      navigate("/");
+    }
   };
 
   return (
@@ -89,21 +103,28 @@ function LoginPage() {
                   Đăng nhập bằng tài khoản của bạn!
                 </p>
               </div>
-              <form className="flex flex-col gap-5">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                 <div>
                   <label
-                    htmlFor="userName"
+                    htmlFor="emailOrUserName"
                     className="text-base font-medium text-primary"
                   >
-                    Tên đăng nhập
+                    Tên đăng nhập/Emai
                   </label>
                   <Input
                     id="userName"
                     type="text"
-                    name="userName"
+                    name="emailOrUserName"
                     icon={false}
+                    value={loginRequest.emailOrUserName}
+                    onChange={(e) =>
+                      setLoginRequest({
+                        ...loginRequest,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
                     className={"mt-2"}
-                    placeholder="Nhập tên đăng nhập"
+                    placeholder="Nhập tên đăng nhập/Email"
                   />
                 </div>
                 <div>
@@ -125,12 +146,19 @@ function LoginPage() {
                     id="password"
                     type="password"
                     name="password"
+                    value={loginRequest.password}
+                    onChange={(e) =>
+                      setLoginRequest({
+                        ...loginRequest,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
                     icon={false}
                     className={"mt-2"}
                     placeholder="Nhập mật khẩu"
                   />
                 </div>
-                <Button variant="secondary" className={"w-full"}>
+                <Button variant="secondary" type="submit" className={"w-full"}>
                   Đăng Nhập
                 </Button>
               </form>
@@ -188,15 +216,15 @@ function LoginPage() {
         className={"w-2/3 lg:w-1/3"}
       >
         <form>
-          <label htmlFor="email">Vui lòng nhập email của bạn: </label>
+          <label htmlFor="email">Vui lòng nhập email/userName của bạn: </label>
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-3 my-2 mt-4 lg:mt-0">
             <Input
               className={"w-full"}
-              type="email"
-              name="email"
-              id="email"
+              type="text"
+              name="emailOrUserName"
+              id="emailOrUserName"
               icon={false}
-              placeholder="example@example.com"
+              placeholder="example@example.com / example"
             />
             <Button variant="outline" className={"w-full lg:w-20 text-xs"}>
               Gửi
