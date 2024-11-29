@@ -34,8 +34,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "BE1\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "BE1\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUBAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:54:06.146Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -46,8 +59,7 @@
               "RelativeToolTip": "BE1\\Request\\AccountRequest.cs",
               "ViewState": "AgIAABAAAABAAAAAAIAnwBcAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-14T16:50:22.047Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-14T16:50:22.047Z"
             },
             {
               "$type": "Document",
@@ -84,19 +96,6 @@
               "ViewState": "AgIAABkAAAAA/v////8owFwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-13T08:58:59.423Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "BE1\\Controllers\\AccountController.cs",
-              "ToolTip": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "BE1\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAABABAAAAamZmZmYgwCIBAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-13T08:54:06.146Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
