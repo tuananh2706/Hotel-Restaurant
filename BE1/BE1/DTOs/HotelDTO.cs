@@ -5,18 +5,29 @@ namespace Hotel.DTOs
     public class HotelDto
     {
         public int HotelId { get; set; }
+
         public string HotelName { get; set; }
+
         public string Address { get; set; }
-        public string City { get; set; }
-        public string District { get; set; }
-        public string State { get; set; }
+
         public string Description { get; set; }
 
-        public List<HotelBookingDto> HotelBookings { get; set; } = new List<HotelBookingDto>();
-        public List<HotelImageDto> HotelImages { get; set; } = new List<HotelImageDto>();
-        public List<HotelReviewDto> HotelReviews { get; set; } = new List<HotelReviewDto>();
-        public List<RoomTypeDto> RoomTypes { get; set; } = new List<RoomTypeDto>();
-        public List<RoomDto> Rooms { get; set; } = new List<RoomDto>();
-        public List<SocialDto> Socials { get; set; } = new List<SocialDto>();
+        public int? CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public int? LocationId { get; set; }
+
+        public string LocationName { get; set; }
+
+        public List<string> ImageUrls { get; set; } = new List<string>();
+
+        public List<string> RoomTypes { get; set; } = new List<string>();
+
+        public List<string> Services { get; set; } = new List<string>();
+
+        public List<string> SocialLinks { get; set; } = new List<string>();
+
+        public double? LowestPrice { get; set; } // Optional: You can calculate and return the lowest price from HotelBookings
     }
 }

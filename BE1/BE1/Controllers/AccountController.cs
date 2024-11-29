@@ -1,5 +1,5 @@
 ﻿using Hotel.DTOs;
-using BE1.Models;
+using BE1.newModels;
 using Microsoft.AspNetCore.Mvc;
 using static Hotel.Request.AccountRequest;
 using BCrypt.Net;

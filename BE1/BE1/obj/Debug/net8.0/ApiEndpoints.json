@@ -295,14 +295,30 @@
   },
   {
     "ContainingType": "Hotel.Controllers.HotelController",
+    "Method": "GetHotelById",
+    "RelativePath": "api/Hotel/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hotel.Controllers.HotelController",
     "Method": "CreateHotel",
-    "RelativePath": "api/Hotel",
+    "RelativePath": "api/Hotel/createHotel",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "hotelRequest",
+        "Name": "createHotelRequest",
         "Type": "Hotel.Request.HotelRequest\u002BCreateHotelRequest",
         "IsRequired": true
       }
@@ -311,63 +327,46 @@
   },
   {
     "ContainingType": "Hotel.Controllers.HotelController",
-    "Method": "GetAllHotels",
-    "RelativePath": "api/Hotel",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.HotelController",
-    "Method": "GetHotel",
-    "RelativePath": "api/Hotel/{id}",
+    "Method": "GetHotels",
+    "RelativePath": "api/Hotel/GetHotels",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.HotelController",
-    "Method": "UpdateHotel",
-    "RelativePath": "api/Hotel/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
+        "Name": "hotelName",
+        "Type": "System.String",
+        "IsRequired": false
       },
       {
-        "Name": "hotelRequest",
-        "Type": "Hotel.Request.HotelRequest\u002BUpdateHotelRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.HotelController",
-    "Method": "DeleteHotel",
-    "RelativePath": "api/Hotel/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
+        "Name": "categoryId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
       {
-        "Name": "id",
+        "Name": "locationId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortByCategory",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortByPrice",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -1812,85 +1811,6 @@
     "ContainingType": "Hotel.Controllers.ServicesReviewImageController",
     "Method": "DeleteServicesReviewImage",
     "RelativePath": "api/ServicesReviewImage/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.SocialController",
-    "Method": "CreateSocial",
-    "RelativePath": "api/Social",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "Hotel.Request.SocialRequest\u002BCreateSocialRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.SocialController",
-    "Method": "GetAllSocials",
-    "RelativePath": "api/Social",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.SocialController",
-    "Method": "GetSocial",
-    "RelativePath": "api/Social/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.SocialController",
-    "Method": "UpdateSocial",
-    "RelativePath": "api/Social/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "Hotel.Request.SocialRequest\u002BUpdateSocialRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.SocialController",
-    "Method": "DeleteSocial",
-    "RelativePath": "api/Social/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj": {}
+    "C:\\documentforPin\\be2\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj": {}
   },
   "projects": {
-    "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj": {
+    "C:\\documentforPin\\be2\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj",
+        "projectUniqueName": "C:\\documentforPin\\be2\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj",
         "projectName": "BE1",
-        "projectPath": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj",
+        "projectPath": "C:\\documentforPin\\be2\\Hotel-Restaurant\\BE1\\BE1\\BE1.csproj",
         "packagesPath": "C:\\Users\\kieu2\\.nuget\\packages\\",
-        "outputPath": "C:\\documentforPin\\be\\Hotel-Restaurant\\BE1\\BE1\\obj\\",
+        "outputPath": "C:\\documentforPin\\be2\\Hotel-Restaurant\\BE1\\BE1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using BE1.Models;
+using BE1.newModels;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,12 @@ builder.Services.AddAuthorization(option =>
 {
     option.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
 
 // Thêm DbContext với kết nối từ appsettings.json
 builder.Services.AddDbContext<HotelContext>(options =>
