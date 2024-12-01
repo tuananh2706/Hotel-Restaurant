@@ -295,6 +295,59 @@
   },
   {
     "ContainingType": "Hotel.Controllers.HotelController",
+    "Method": "UpdateHotel",
+    "RelativePath": "api/Hotel/{hotelId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "hotelId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "hotelDto",
+        "Type": "Hotel.Request.HotelRequest\u002BUpdateHotelRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hotel.Controllers.HotelController",
+    "Method": "ActivateHotel",
+    "RelativePath": "api/Hotel/{hotelId}/activate",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "hotelId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hotel.Controllers.HotelController",
+    "Method": "DeactivateHotel",
+    "RelativePath": "api/Hotel/{hotelId}/deactivate",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "hotelId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hotel.Controllers.HotelController",
     "Method": "GetHotelById",
     "RelativePath": "api/Hotel/{id}",
     "HttpMethod": "GET",
@@ -321,6 +374,27 @@
         "Name": "createHotelRequest",
         "Type": "Hotel.Request.HotelRequest\u002BCreateHotelRequest",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hotel.Controllers.HotelController",
+    "Method": "GetAllHotels",
+    "RelativePath": "api/Hotel/GetAllHotels",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -675,85 +749,6 @@
     "ContainingType": "Hotel.Controllers.HotelReviewController",
     "Method": "DeleteHotelReview",
     "RelativePath": "api/HotelReview/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.HotelReviewImageController",
-    "Method": "CreateHotelReviewImage",
-    "RelativePath": "api/HotelReviewImage",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "imageRequest",
-        "Type": "Hotel.Request.HotelReviewImageRequest\u002BCreateHotelReviewImageRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.HotelReviewImageController",
-    "Method": "GetAllHotelReviewImages",
-    "RelativePath": "api/HotelReviewImage",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.HotelReviewImageController",
-    "Method": "GetHotelReviewImage",
-    "RelativePath": "api/HotelReviewImage/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.HotelReviewImageController",
-    "Method": "UpdateHotelReviewImage",
-    "RelativePath": "api/HotelReviewImage/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "imageRequest",
-        "Type": "Hotel.Request.HotelReviewImageRequest\u002BUpdateHotelReviewImageRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.HotelReviewImageController",
-    "Method": "DeleteHotelReviewImage",
-    "RelativePath": "api/HotelReviewImage/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -1161,85 +1156,6 @@
     "ContainingType": "Hotel.Controllers.RoomReviewController",
     "Method": "DeleteRoomReview",
     "RelativePath": "api/RoomReview/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.RoomReviewImageController",
-    "Method": "CreateRoomReviewImage",
-    "RelativePath": "api/RoomReviewImage",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "Hotel.Request.RoomReviewImageRequest\u002BCreateRoomReviewImageRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.RoomReviewImageController",
-    "Method": "GetAllRoomReviewImages",
-    "RelativePath": "api/RoomReviewImage",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.RoomReviewImageController",
-    "Method": "GetRoomReviewImage",
-    "RelativePath": "api/RoomReviewImage/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.RoomReviewImageController",
-    "Method": "UpdateRoomReviewImage",
-    "RelativePath": "api/RoomReviewImage/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "Hotel.Request.RoomReviewImageRequest\u002BUpdateRoomReviewImageRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.RoomReviewImageController",
-    "Method": "DeleteRoomReviewImage",
-    "RelativePath": "api/RoomReviewImage/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -1732,85 +1648,6 @@
     "ContainingType": "Hotel.Controllers.ServiceReviewController",
     "Method": "DeleteServiceReview",
     "RelativePath": "api/ServiceReview/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.ServicesReviewImageController",
-    "Method": "CreateServicesReviewImage",
-    "RelativePath": "api/ServicesReviewImage",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "Hotel.Request.ServicesReviewImageRequest\u002BCreateServicesReviewImageRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.ServicesReviewImageController",
-    "Method": "GetAllServicesReviewImages",
-    "RelativePath": "api/ServicesReviewImage",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.ServicesReviewImageController",
-    "Method": "GetServicesReviewImage",
-    "RelativePath": "api/ServicesReviewImage/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.ServicesReviewImageController",
-    "Method": "UpdateServicesReviewImage",
-    "RelativePath": "api/ServicesReviewImage/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "Hotel.Request.ServicesReviewImageRequest\u002BUpdateServicesReviewImageRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hotel.Controllers.ServicesReviewImageController",
-    "Method": "DeleteServicesReviewImage",
-    "RelativePath": "api/ServicesReviewImage/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,

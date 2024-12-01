@@ -11,7 +11,7 @@ public partial class HotelInvoice
 
     public int HotelBookingId { get; set; }
 
-    public DateTime InvoiceDate { get; set; }
+    public DateOnly InvoiceDate { get; set; }
 
     public decimal TotalAmount { get; set; }
 

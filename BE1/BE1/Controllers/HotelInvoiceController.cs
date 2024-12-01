@@ -2,6 +2,7 @@
 using BE1.Models;
 using Hotel.Request;
 using Hotel.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ namespace Hotel.Controllers
             var hotelInvoice = new HotelInvoice
             {
                 HotelBookingId = invoiceRequest.HotelBookingId,
-                InvoiceDate = invoiceRequest.InvoiceDate,
+                InvoiceDate = (DateOnly)invoiceRequest.InvoiceDate,
                 TotalAmount = invoiceRequest.TotalAmount,
                 Status = invoiceRequest.Status
             };
@@ -69,7 +70,7 @@ namespace Hotel.Controllers
 
             return Ok(invoiceDtos);
         }
-        
+
         // GET api/hotelinvoice/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHotelInvoice(int id)
@@ -114,7 +115,7 @@ namespace Hotel.Controllers
             }
             if (invoiceRequest.InvoiceDate != null)
             {
-                invoice.InvoiceDate = invoiceRequest.InvoiceDate;
+                invoice.InvoiceDate = invoiceRequest.InvoiceDate.Value;
             }
             if (invoiceRequest.TotalAmount != null)
             {

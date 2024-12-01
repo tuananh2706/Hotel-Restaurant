@@ -22,6 +22,4 @@ public partial class ServiceReview
     public virtual Account AccountNameNavigation { get; set; }
 
     public virtual Service Service { get; set; }
-
-    public virtual ICollection<ServicesReviewImage> ServicesReviewImages { get; set; } = new List<ServicesReviewImage>();
 }

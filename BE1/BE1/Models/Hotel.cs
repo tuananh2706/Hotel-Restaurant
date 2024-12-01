@@ -13,13 +13,14 @@ public partial class Hotel
 
     public string Address { get; set; }
 
-    public string City { get; set; }
-
-    public string District { get; set; }
-
-    public string State { get; set; }
-
     public string Description { get; set; }
+
+    public int? CategoryId { get; set; }
+
+    public int? LocationId { get; set; }
+    public bool IsActive { get; set; }
+
+    public virtual HotelCategory Category { get; set; }
 
     public virtual ICollection<FavoriteHotel> FavoriteHotels { get; set; } = new List<FavoriteHotel>();
 
@@ -28,6 +29,8 @@ public partial class Hotel
     public virtual ICollection<HotelImage> HotelImages { get; set; } = new List<HotelImage>();
 
     public virtual ICollection<HotelReview> HotelReviews { get; set; } = new List<HotelReview>();
+
+    public virtual Location Location { get; set; }
 
     public virtual ICollection<RoomType> RoomTypes { get; set; } = new List<RoomType>();
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BE1.newModels;
+using BE1.Models;
 using Hotel.Request;
 using Hotel.DTOs;
 using System.Collections.Generic;
@@ -22,7 +22,9 @@ namespace Hotel.Controllers
             _context = context;
         }
 
-        // Get khách sạn có filter, phân trang
+
+
+        // Get khách sạn có filter, phân trang dành cho customer.
         [HttpGet("GetHotels")]
         public async Task<IActionResult> GetHotels(
             [FromQuery] string hotelName = null,
@@ -36,11 +38,12 @@ namespace Hotel.Controllers
             try
             {
                 var query = _context.Hotels
+                    .Where(h => h.IsActive)
                     .Include(h => h.HotelImages)  // Bao gồm hình ảnh của khách sạn
                     .Include(h => h.RoomTypes)    // Bao gồm loại phòng
                     .ThenInclude(rt => rt.Rooms)  // Bao gồm các phòng thuộc loại phòng
                     .Include(h => h.Services)     // Bao gồm dịch vụ của khách sạn
-                    .Include(h => h.Category)     // Bao gồm thể loại khách sạn
+                    .Include(h => h.Category)     // Bao gồm danh mục khách sạn
                     .Include(h => h.Location)     // Bao gồm thông tin vị trí
                     .AsQueryable();
 
@@ -50,7 +53,7 @@ namespace Hotel.Controllers
                     query = query.Where(h => h.HotelName.Contains(hotelName));
                 }
 
-                // Lọc theo thể loại khách sạn
+                // Lọc theo danh mục khách sạn
                 if (categoryId.HasValue)
                 {
                     query = query.Where(h => h.CategoryId == categoryId);
@@ -106,6 +109,7 @@ namespace Hotel.Controllers
                         h.HotelName,
                         h.Address,
                         h.Description,
+                        h.IsActive,
                         CategoryName = h.Category.CategoryName,
                         LocationName = h.Location.District,
                         ImageUrls = h.HotelImages.Select(i => i.ImageUrl).ToList(),
@@ -137,6 +141,48 @@ namespace Hotel.Controllers
         }
 
 
+        // Chức năng này dành cho admin, lấy tất cả khách sạn kể cả đã deactivate
+        [HttpGet("GetAllHotels")]
+        public async Task<IActionResult> GetAllHotels(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var query = _context.Hotels
+                    .Include(h => h.HotelImages)
+                    .Include(h => h.Category)
+                    .Include(h => h.Location);
+
+                var totalCount = await query.CountAsync();
+                var hotels = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return Ok(new
+                {
+                    TotalCount = totalCount,
+                    Page = page,
+                    PageSize = pageSize,
+                    Data = hotels.Select(h => new
+                    {
+                        h.HotelId,
+                        h.HotelName,
+                        h.Address,
+                        h.Description,
+                        h.IsActive,
+                        CategoryName = h.Category.CategoryName,
+                        LocationName = h.Location.District,
+                        ImageUrls = h.HotelImages.Select(i => i.ImageUrl).ToList()
+                    }).ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
         //GET api/hotel/{id}
         [HttpGet("{id}")]
@@ -153,11 +199,13 @@ namespace Hotel.Controllers
                     .Include(h => h.Category)     // Bao gồm thể loại khách sạn
                     .Include(h => h.Location)     // Bao gồm vị trí của khách sạn
                     .Include(h => h.Socials)       // Bao gồm thông tin mạng xã hội
-                    .FirstOrDefaultAsync(h => h.HotelId == id);
+                    .Include(h => h.HotelReviews)   // Bao gồm cả reviews của khách sạn
+                        .ThenInclude(hr => hr.AccountNameNavigation)
+                    .FirstOrDefaultAsync(h => h.HotelId == id && h.IsActive == true);
 
                 if (hotel == null)
                 {
-                    return NotFound(new { message = "Khách sạn không tồn tại" });
+                    return NotFound(new { message = "Khách sạn không tồn tại hoặc đã bị vô hiệu hóa" });
                 }
 
                 var hotelDto = new
@@ -188,6 +236,20 @@ namespace Hotel.Controllers
                         ImageUrls = s.ServiceImages.Select(si => si.ImageUrl).ToList()
                     }).ToList(),
                     Social = hotel.Socials.Any() ? hotel.Socials.Select(s => s.LinkUrl).ToList() : null,
+                    Reviews = hotel.HotelReviews.Select(r => new
+                    {
+                        r.HotelReviewId,
+                        r.Rating,
+                        r.ReviewText,
+                        r.ReviewDate,
+                        Reviewer = new
+                        {
+                            r.AccountNameNavigation.AccountName,
+                            r.AccountNameNavigation.FirstName,
+                            r.AccountNameNavigation.LastName,
+                            r.AccountNameNavigation.AvatarUrl
+                        }
+                    }).OrderByDescending(r => r.ReviewDate).ToList()
                 };
 
                 return Ok(new
@@ -209,13 +271,14 @@ namespace Hotel.Controllers
             try
             {
                 // Tạo đối tượng Hotel mới từ request
-                var hotel = new BE1.newModels.Hotel
+                var hotel = new BE1.Models.Hotel
                 {
                     HotelName = createHotelRequest.HotelName,
                     Address = createHotelRequest.Address,
                     Description = createHotelRequest.Description,
                     CategoryId = createHotelRequest.CategoryId,
                     LocationId = createHotelRequest.LocationId,
+                    IsActive = true,
                 };
 
                 // Thêm khách sạn vào cơ sở dữ liệu
@@ -232,7 +295,7 @@ namespace Hotel.Controllers
                     if (existingRoomType == null)
                     {
                         // Nếu không có, tạo mới loại phòng
-                        var newRoomType = new BE1.newModels.RoomType
+                        var newRoomType = new BE1.Models.RoomType
                         {
                             TypeName = roomTypeRequest.TypeName,
                             HotelId = hotel.HotelId  // Liên kết loại phòng với khách sạn
@@ -247,18 +310,35 @@ namespace Hotel.Controllers
                     // Thêm các phòng vào loại phòng
                     foreach (var roomRequest in roomTypeRequest.Rooms)
                     {
-                        var newRoom = new BE1.newModels.Room
+                        var newRoom = new BE1.Models.Room
                         {
-                            RoomTypeId = existingRoomType.RoomTypeId,  // Liên kết phòng với loại phòng
+                            RoomTypeId = existingRoomType.RoomTypeId,
                             PricePerNight = roomRequest.PricePerNight,
                             Status = roomRequest.Status,
                             Description = roomRequest.Description,
                             MaxOccupancy = roomRequest.MaxOccupancy,
                             RoomCount = roomRequest.RoomCount
                         };
+                        _context.Rooms.Add(newRoom); 
+                        await _context.SaveChangesAsync();
 
-                        _context.Rooms.Add(newRoom);
+                        // Xử lý hình ảnh phòng
+                        if (roomRequest.RoomImages != null && roomRequest.RoomImages.Any())
+                        {
+                            foreach (var imageUrl in roomRequest.RoomImages)
+                            {
+                                var roomImage = new BE1.Models.RoomImage
+                                {   
+                                    ImageUrl = imageUrl,
+                                    RoomId = newRoom.RoomId // Sử dụng RoomId của phòng mới tạo
+                                };
+                                _context.RoomImages.Add(roomImage);
+                            }
+                        }
                     }
+
+                    // Đừng quên lưu thay đổi
+                    await _context.SaveChangesAsync();
                 }
 
                 // Xử lý các dịch vụ được gửi từ request
@@ -270,7 +350,7 @@ namespace Hotel.Controllers
 
                     if (existingService == null)
                     {
-                        var newService = new BE1.newModels.Service
+                        var newService = new BE1.Models.Service
                         {
                             ServiceName = serviceRequest.ServiceName,
                             ServicePrice = serviceRequest.ServicePrice,
@@ -293,7 +373,7 @@ namespace Hotel.Controllers
                     {
                         foreach (var imageUrl in serviceRequest.ServiceImages)
                         {
-                            var serviceImage = new BE1.newModels.ServiceImage
+                            var serviceImage = new BE1.Models.ServiceImage
                             {
                                 ImageUrl = imageUrl,
                                 ServiceId = existingService.ServiceId
@@ -304,25 +384,25 @@ namespace Hotel.Controllers
                 }
 
                 // Xử lý hình ảnh của khách sạn
-                if (createHotelRequest.HotelImages != null && createHotelRequest.HotelImages.Any())
-                {
-                    foreach (var imageUrl in createHotelRequest.HotelImages)
+                    if (createHotelRequest.HotelImages != null && createHotelRequest.HotelImages.Any())
                     {
-                        var hotelImage = new BE1.newModels.HotelImage
+                        foreach (var imageUrl in createHotelRequest.HotelImages)
                         {
-                            ImageUrl = imageUrl,
-                            HotelId = hotel.HotelId
-                        };
-                        _context.HotelImages.Add(hotelImage);
+                            var hotelImage = new BE1.Models.HotelImage
+                            {
+                                ImageUrl = imageUrl,
+                                HotelId = hotel.HotelId
+                            };
+                            _context.HotelImages.Add(hotelImage);
+                        }
                     }
-                }
 
                 // Xử lý các mạng xã hội
                 if (createHotelRequest.Social != null && createHotelRequest.Social.Any())
                 {
                     foreach (var socialRequest in createHotelRequest.Social)
                     {
-                        var newSocial = new BE1.newModels.Social
+                        var newSocial = new BE1.Models.Social
                         {
                             LinkUrl = socialRequest.LinkUrl,
                             HotelId = hotel.HotelId
@@ -348,11 +428,59 @@ namespace Hotel.Controllers
             }
         }
 
+        [HttpPut("{hotelId}")]
+        public async Task<IActionResult> UpdateHotel(int hotelId, UpdateHotelRequest hotelDto)
+        {
+            // Kiểm tra xem khách sạn có tồn tại không
+            var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.HotelId == hotelId);
+            if (hotel == null)
+            {
+                return NotFound(new { message = "Khách sạn không tồn tại hoặc đã bị vô hiệu hóa!" });
+            }
 
+            // Cập nhật các thông tin cần thiết của khách sạn
+            hotel.HotelName = hotelDto.HotelName;
+            hotel.Address = hotelDto.Address;
+            hotel.Description = hotelDto.Description;
+            hotel.CategoryId = hotelDto.CategoryId;
+            hotel.LocationId = hotelDto.LocationId;
+            
 
+            // Lưu lại thay đổi vào cơ sở dữ liệu
+            await _context.SaveChangesAsync();
 
+            return Ok(new { message = "Cập nhật khách sạn thành công" });
+        }
+        // Vô hiệu hóa trạng thái của khách sạn
+        [HttpPut("{hotelId}/deactivate")]
+        public async Task<IActionResult> DeactivateHotel(int hotelId)
+        {
+            var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.HotelId == hotelId && h.IsActive);
+            if (hotel == null)
+            {
+                return NotFound(new { message = "Khách sạn không tồn tại hoặc đã bị vô hiệu hóa" });
+            }
 
+            hotel.IsActive = false;
+            await _context.SaveChangesAsync();
 
+            return Ok(new { message = "Khách sạn đã được vô hiệu hóa thành công" });
+        }
 
+        // Khôi phục lại trạng thái khách sạn
+        [HttpPut("{hotelId}/activate")]
+        public async Task<IActionResult> ActivateHotel(int hotelId)
+        {
+            var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.HotelId == hotelId && !h.IsActive);
+            if (hotel == null)
+            {
+                return NotFound(new { message = "Khách sạn không tồn tại hoặc đã được kích hoạt" });
+            }
+
+            hotel.IsActive = true;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Khách sạn đã được kích hoạt thành công" });
+        }
     }
 }

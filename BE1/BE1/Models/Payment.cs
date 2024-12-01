@@ -20,6 +20,4 @@ public partial class Payment
     public DateTime? PaymentDate { get; set; }
 
     public virtual HotelBooking HotelBooking { get; set; }
-
-    public virtual ServiceBooking ServiceBooking { get; set; }
 }

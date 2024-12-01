@@ -3,15 +3,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace BE1.newModels;
+namespace BE1.Models;
 
-public partial class HotelCategory
+public partial class Location
 {
-    public int CategoryId { get; set; }
+    public int LocationId { get; set; }
 
-    public string CategoryName { get; set; }
-
-    public string Description { get; set; }
+    public string District { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

@@ -22,6 +22,4 @@ public partial class RoomReview
     public virtual Account AccountNameNavigation { get; set; }
 
     public virtual Room Room { get; set; }
-
-    public virtual ICollection<RoomReviewImage> RoomReviewImages { get; set; } = new List<RoomReviewImage>();
 }

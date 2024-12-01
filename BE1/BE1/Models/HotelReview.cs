@@ -22,6 +22,4 @@ public partial class HotelReview
     public virtual Account AccountNameNavigation { get; set; }
 
     public virtual Hotel Hotel { get; set; }
-
-    public virtual ICollection<HotelReviewImage> HotelReviewImages { get; set; } = new List<HotelReviewImage>();
 }

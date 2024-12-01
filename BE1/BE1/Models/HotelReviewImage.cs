@@ -12,6 +12,4 @@ public partial class HotelReviewImage
     public int HotelReviewId { get; set; }
 
     public string ImageUrl { get; set; }
-
-    public virtual HotelReview HotelReview { get; set; }
 }

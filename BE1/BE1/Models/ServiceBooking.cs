@@ -19,8 +19,6 @@ public partial class ServiceBooking
 
     public virtual HotelBooking HotelBooking { get; set; }
 
-    public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
-
     public virtual Service Service { get; set; }
 
     public virtual ICollection<ServiceInvoice> ServiceInvoices { get; set; } = new List<ServiceInvoice>();

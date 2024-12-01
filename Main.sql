@@ -4,8 +4,6 @@ GO
 USE hotel_main;
 GO
 
-
-
 CREATE TABLE Accounts (
     account_name NVARCHAR(255) NOT NULL PRIMARY KEY,
     first_name NVARCHAR(255) NOT NULL,
@@ -240,14 +238,6 @@ ALTER TABLE Hotels
 ADD CONSTRAINT FK_Hotels_Hotel_Categories FOREIGN KEY (category_id)
 REFERENCES Hotel_Categories(category_id);	
 
-INSERT INTO Hotel_Categories (category_name, description)
-VALUES 
-('1', N'Khách sạn 1 sao'),
-('2', N'Khách sạn 2 sao'),
-('3', N'Khách sạn 3 sao'),
-('4', N'Khách sạn 4 sao'),
-('5', N'Khách sạn 5 sao');
-
 CREATE TABLE Locations (
     location_id INT PRIMARY KEY IDENTITY(1,1), -- Mã địa điểm
     district NVARCHAR(100) NOT NULL,          -- Quận
@@ -277,6 +267,11 @@ ALTER TABLE Hotels
 DROP COLUMN state;
 
 
+-- thêm trường mới cho Hotels cho chức năng xóa mềm. 
+ALTER TABLE Hotels
+ADD isActive bit NOT NULL DEFAULT 1;
+
+
 select * from Hotel_Categories
 
 INSERT INTO Locations (district)
@@ -298,76 +293,137 @@ VALUES
 ('Tân Phú'),
 ('Tân Bình');
 
-INSERT INTO Hotels (hotel_name, address, category_id, location_id, description)
+INSERT INTO Hotel_Categories (category_name, description)
 VALUES 
-('Khách sạn 1 sao ABC', '123 Đường ABC, Quận 1', 1, 1, 'Khách sạn 1 sao giá rẻ tại trung tâm thành phố'),
-('Khách sạn 3 sao XYZ', '456 Đường XYZ, Quận 3', 3, 3, 'Khách sạn 3 sao với tiện nghi đầy đủ và dịch vụ tốt'),
-('Khách sạn 5 sao DEF', '789 Đường DEF, Quận 5', 5, 5, 'Khách sạn cao cấp với các dịch vụ đẳng cấp quốc tế');
+('1', N'Khách sạn 1 sao'),
+('2', N'Khách sạn 2 sao'),
+('3', N'Khách sạn 3 sao'),
+('4', N'Khách sạn 4 sao'),
+('5', N'Khách sạn 5 sao');
 
-INSERT INTO Hotels (hotel_name, address, category_id, location_id, description)
+
+-- 1. Xóa dữ liệu từ các bảng liên quan đến Payments trước
+DELETE FROM Payments;
+
+-- 2. Xóa dữ liệu từ các bảng liên quan đến Invoice
+DELETE FROM Invoice_Details;
+DELETE FROM Hotel_Invoices;
+DELETE FROM Service_Invoices;
+
+-- 3. Xóa dữ liệu từ các bảng Reviews và Images
+DELETE FROM Room_Reviews;
+DELETE FROM Hotel_Reviews;
+DELETE FROM Service_Reviews;
+DELETE FROM Room_Images;
+DELETE FROM Hotel_Images;
+DELETE FROM Service_Images;
+
+-- 4. Xóa dữ liệu từ các bảng Bookings
+DELETE FROM Service_Bookings;
+DELETE FROM Hotel_Bookings;
+
+-- 5. Xóa dữ liệu từ các bảng phụ khác
+DELETE FROM Favorite_Hotels;
+DELETE FROM Social;
+DELETE FROM Services;
+
+-- 6. Xóa dữ liệu từ các bảng liên quan đến Rooms
+DELETE FROM Rooms;
+DELETE FROM Room_Types;
+
+-- 7. Cuối cùng mới xóa dữ liệu từ bảng Hotels
+DELETE FROM Hotels;
+
+-- Reset lại các giá trị IDENTITY
+DBCC CHECKIDENT ('Hotels', RESEED, 0);
+DBCC CHECKIDENT ('Room_Types', RESEED, 0);
+DBCC CHECKIDENT ('Rooms', RESEED, 0);
+DBCC CHECKIDENT ('Hotel_Images', RESEED, 0);
+DBCC CHECKIDENT ('Services', RESEED, 0);
+DBCC CHECKIDENT ('Social', RESEED, 0);
+DBCC CHECKIDENT ('Hotel_Invoices', RESEED, 0);
+DBCC CHECKIDENT ('Service_Invoices', RESEED, 0);
+DBCC CHECKIDENT ('Invoice_Details', RESEED, 0);
+DBCC CHECKIDENT ('Payments', RESEED, 0);
+DBCC CHECKIDENT ('Service_Bookings', RESEED, 0);
+DBCC CHECKIDENT ('Service_Images', RESEED, 0);
+DBCC CHECKIDENT ('Room_Images', RESEED, 0);
+EXEC sp_help 'Hotels';
+
+select * from Hotels
+
+-- Tạo dữ liệu mẫu mới cho Hotels
+INSERT INTO Hotels (hotel_name, address, category_id, location_id, description, isActive)
 VALUES 
-(N'Khách sạn 1 sao ABC', N'123 Đường ABC, Quận 1', 1, 1, N'Khách sạn 1 sao giá rẻ tại trung tâm thành phố'),
-(N'Khách sạn 3 sao XYZ', N'456 Đường XYZ, Quận 3', 3, 3, N'Khách sạn 3 sao với tiện nghi đầy đủ và dịch vụ tốt'),
-(N'Khách sạn 5 sao DEF', N'789 Đường DEF, Quận 5', 5, 5, N'Khách sạn cao cấp với các dịch vụ đẳng cấp quốc tế');
+(N'The Reverie Saigon', N'22-36 Nguyễn Huệ, Quận 1', 5, 1, N'Khách sạn 5 sao sang trọng với tầm nhìn panorama ra thành phố', 1),
+(N'Park Hyatt Saigon', N'2 Công Trường Lam Sơn, Quận 1', 5, 1, N'Khách sạn cao cấp phong cách Pháp colonial', 1),
+(N'Rex Hotel', N'141 Nguyễn Huệ, Quận 1', 4, 1, N'Khách sạn lịch sử với kiến trúc độc đáo', 1),
+(N'Hotel Des Arts', N'76-78 Nguyễn Thị Minh Khai, Quận 3', 5, 3, N'Khách sạn boutique với thiết kế nghệ thuật độc đáo', 1),
+(N'Liberty Central Saigon', N'179 Lê Thánh Tôn, Quận 1', 4, 1, N'Khách sạn hiện đại trong khu trung tâm', 1),
+(N'Mường Thanh Luxury', N'261C Nguyễn Văn Trỗi, Phú Nhuận', 4, 14, N'Khách sạn cao cấp với dịch vụ đẳng cấp', 1),
+(N'ibis Saigon Airport', N'2 Hồng Hà, Tân Bình', 3, 16, N'Khách sạn tiện nghi gần sân bay', 1),
+(N'Holiday Inn', N'491 Hoàng Văn Thụ, Tân Bình', 4, 16, N'Khách sạn quốc tế tiêu chuẩn', 1);
 
--- Tạo dữ liệu mẫu cho bảng Room_Types
+-- Tạo các loại phòng cho từng khách sạn
 INSERT INTO Room_Types (hotel_id, type_name)
 VALUES 
-(1, 'Standard'),
-(1, 'Deluxe'),
-(2, 'Standard'),
-(2, 'Executive'),
-(3, 'Luxury');
+(1, N'Deluxe King'),
+(1, N'Grand Deluxe'),
+(1, N'Junior Suite'),
+(2, N'Park Suite'),
+(2, N'Deluxe Room'),
+(3, N'Premium Deluxe'),
+(3, N'Executive Suite'),
+(4, N'Deluxe Sky View'),
+(4, N'Luxury Suite'),
+(5, N'Deluxe City View'),
+(5, N'Executive Room'),
+(6, N'Superior Room'),
+(6, N'Deluxe Room'),
+(7, N'Standard Room'),
+(7, N'Superior Room'),
+(8, N'Deluxe Room'),
+(8, N'Suite Room');
 
--- Tạo dữ liệu mẫu cho bảng Rooms
+-- Tạo phòng cho các loại phòng
 INSERT INTO Rooms (room_type_id, price_per_night, status, description, max_occupancy, room_count)
 VALUES 
-(1, 500000, 'available', 'Phòng tiêu chuẩn với đầy đủ tiện nghi', 2, 10),
-(2, 800000, 'available', 'Phòng Deluxe với view đẹp', 2, 5),
-(3, 600000, 'booked', 'Phòng tiêu chuẩn tiện nghi', 2, 8),
-(4, 1200000, 'available', 'Phòng Executive với các tiện nghi cao cấp', 3, 4),
-(5, 2000000, 'available', 'Phòng Luxury sang trọng và đẳng cấp', 3, 2);
+(1, 5500000, 'available', N'Phòng sang trọng với view thành phố', 2, 5),
+(1, 6500000, 'available', N'Phòng rộng rãi với tiện nghi cao cấp', 2, 3),
+(2, 8500000, 'available', N'Suite với phòng khách riêng biệt', 3, 2),
+(3, 12000000, 'available', N'Suite cao cấp với dịch vụ quản gia', 2, 2),
+(4, 7500000, 'available', N'Phòng view đẹp với tiện nghi 5 sao', 2, 4),
+(5, 4500000, 'available', N'Phòng tiêu chuẩn sang trọng', 2, 6),
+(6, 3500000, 'available', N'Phòng premium với view thành phố', 2, 5),
+(7, 2800000, 'available', N'Phòng tiêu chuẩn gần sân bay', 2, 8),
+(8, 3200000, 'available', N'Phòng superior tiện nghi', 2, 6);
 
--- Tạo dữ liệu mẫu cho bảng Hotel_Images
+-- Tạo dữ liệu hình ảnh cho khách sạn
 INSERT INTO Hotel_Images (hotel_id, image_url)
 VALUES 
-(1, 'https://example.com/hotel1_1.jpg'),
-(1, 'https://example.com/hotel1_2.jpg'),
-(2, 'https://example.com/hotel2_1.jpg'),
-(2, 'https://example.com/hotel2_2.jpg'),
-(3, 'https://example.com/hotel3_1.jpg');
+(1, 'https://example.com/reverie-1.jpg'),
+(1, 'https://example.com/reverie-2.jpg'),
+(2, 'https://example.com/parkhyatt-1.jpg'),
+(2, 'https://example.com/parkhyatt-2.jpg'),
+(3, 'https://example.com/rex-1.jpg'),
+(3, 'https://example.com/rex-2.jpg'),
+(4, 'https://example.com/desarts-1.jpg'),
+(4, 'https://example.com/desarts-2.jpg');
 
--- Tạo dữ liệu mẫu cho bảng Hotel_Bookings
-INSERT INTO Hotel_Bookings (account_name, room_id, hotel_id, check_in_date, check_out_date, total_price, status)
+-- Tạo dữ liệu dịch vụ cho khách sạn
+INSERT INTO Services (service_name, service_price, description, service_type, hotel_id)
 VALUES 
-('test5', 1, 1, '2024-12-01', '2024-12-05', 2000000, 'booked'),
-('trung', 3, 2, '2024-12-10', '2024-12-12', 1800000, 'booked');
+(N'Spa Cao Cấp', 1500000, N'Dịch vụ spa cao cấp với các liệu pháp trị liệu', N'Spa', 1),
+(N'Nhà Hàng Á Âu', 500000, N'Nhà hàng phục vụ ẩm thực Á - Âu', N'Restaurant', 1),
+(N'Phòng Gym', 200000, N'Phòng tập gym với thiết bị hiện đại', N'Fitness', 2),
+(N'Hồ Bơi Vô Cực', 300000, N'Hồ bơi vô cực view panorama', N'Pool', 2),
+(N'Dịch Vụ Đưa Đón', 800000, N'Dịch vụ đưa đón sân bay', N'Transport', 3);
 
-INSERT INTO Payments (hotel_booking_id, amount)
-VALUES 
-(1, 2000000),
-(2, 1800000);
-
-INSERT INTO Hotel_Reviews (account_name, hotel_id, rating, review_text)
-VALUES 
-('test5', 1, 4, 'Khách sạn đẹp, dịch vụ ổn'),
-('trung', 2, 5, 'Khách sạn tuyệt vời, nhân viên thân thiện');
-
--- Tạo dữ liệu mẫu cho bảng Room_Reviews
-INSERT INTO Room_Reviews (account_name, room_id, rating, review_text)
-VALUES 
-('test5', 1, 4, 'Phòng sạch sẽ, thoải mái'),
-('trung', 3, 5, 'Phòng rất đẹp và tiện nghi');
-
+-- Tạo dữ liệu social media cho khách sạn
 INSERT INTO Social (Link_URL, hotel_id)
 VALUES 
-('https://facebook.com/hotel1', 1),
-('https://instagram.com/hotel2', 2),
-('https://twitter.com/hotel3', 3);
-
--- Tạo dữ liệu mẫu cho bảng Favorite_Hotels
-INSERT INTO Favorite_Hotels (account_name, hotel_id)
-VALUES 
-('test5', 2),
-('trung', 3);
-
+('https://facebook.com/reveriesaigon', 1),
+('https://instagram.com/reveriesaigon', 1),
+('https://facebook.com/parkhyattsaigon', 2),
+('https://facebook.com/rexhotelsaigon', 3),
+('https://instagram.com/hoteldesartssaigon', 4);
