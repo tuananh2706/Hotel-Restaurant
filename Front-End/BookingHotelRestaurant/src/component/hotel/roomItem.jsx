@@ -1,7 +1,15 @@
-function RoomItem({ obj }) {
-  const { img, roomType, amount } = obj;
+import demo from "../../assets/img/banner.png";
+
+function RoomItem({ obj, onClick }) {
+  const { typeName, rooms } = obj;
+  const img =
+    rooms[0]?.imageUrls[0]?.length > 0 ? rooms[0]?.imageUrls[0] : demo;
+  const amount = rooms?.length || 0;
   return (
-    <div className="relative w-[132px] h-[142px] rounded-xl group cursor-pointer overflow-hidden">
+    <div
+      onClick={onClick}
+      className="relative w-[132px] h-[142px] rounded-xl group cursor-pointer overflow-hidden"
+    >
       <img
         src={img}
         alt="abc"
@@ -13,7 +21,7 @@ function RoomItem({ obj }) {
           w-full h-[30%] flex flex-col items-center justify-center
           bg-black bg-opacity-50 rounded-b-xl text-white"
       >
-        <p className="text-sm">{roomType}</p>
+        <p className="text-sm">{typeName}</p>
         <span className="text-[10px]">({amount})</span>
       </div>
     </div>

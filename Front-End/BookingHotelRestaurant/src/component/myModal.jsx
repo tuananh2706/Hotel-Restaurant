@@ -57,7 +57,7 @@ const Modal = ({
           </button>
         )}
         {title && (
-          <h2 className="text-xl font-bold mb-4 border-b-2 p-2 border-slate-200 ">
+          <h2 className="text-xl font-medium mb-4 border-b-2 p-2 border-slate-200 ">
             {title}
           </h2>
         )}

@@ -3,9 +3,12 @@ import Text from "../text/text";
 import demoImg from "../../assets/img/banner.png";
 import { useGlobalContext } from "../../context";
 import { useEffect } from "react";
+import StarIcon from "../../assets/icons/starIcon";
+import { useNavigate } from "react-router-dom";
 
 function HotelItem({ obj }) {
   const {
+    hotelId,
     hotelName,
     address,
     imageUrls,
@@ -15,10 +18,13 @@ function HotelItem({ obj }) {
     roomTypes,
   } = obj || {};
 
+  const navigate = useNavigate();
+
   const { formatCurrency } = useGlobalContext();
 
   return (
     <div
+      onClick={() => navigate(`${hotelId}`)}
       className="p-4 w-full h-auto border bg-white rounded-[10px] 
     shadow-sm flex flex-col sm:flex-row items-center gap-2 md:gap-6
     transition-all duration-200 hover:shadow-lg cursor-pointer active:shadow-none"
@@ -34,7 +40,7 @@ function HotelItem({ obj }) {
           <Text className={"text-[22px]"}>{hotelName}</Text>
           <div className="flex gap-1 text-sm">
             <div className="flex items-center gap-2 text-sm md:text-base text-primary">
-              I <p>5 Starts || </p>
+              <StarIcon color="#007e47" size="20" /> <p>5 Starts || </p>
             </div>
             <p className="text-secondary text-sm md:text-base">50 Reviews </p>
           </div>

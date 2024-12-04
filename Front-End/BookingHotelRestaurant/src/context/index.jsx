@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { AuthProvider } from "./authContext";
 import { jwtDecode } from "jwt-decode";
 import { HotelProvider, HotelsContext } from "./hotelsContext";
+import { ReviewProvider } from "./reviewContext";
 
 const GobalContext = createContext();
 export const GobalProvider = ({ children }) => {
@@ -60,7 +61,9 @@ export const GobalProvider = ({ children }) => {
       }}
     >
       <AuthProvider>
-        <HotelProvider>{children}</HotelProvider>
+        <HotelProvider>
+          <ReviewProvider>{children}</ReviewProvider>
+        </HotelProvider>
       </AuthProvider>
     </GobalContext.Provider>
   );

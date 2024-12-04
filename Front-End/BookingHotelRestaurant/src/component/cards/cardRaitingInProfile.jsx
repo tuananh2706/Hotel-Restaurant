@@ -1,12 +1,18 @@
 import MoreIcon from "../../assets/icons/moreIcon";
+import StarIcon from "../../assets/icons/starIcon";
 import Demo from "../../assets/img/banner.png";
 import { useState } from "react";
 
-function RaitingProfile({ profile = true }) {
+function RaitingProfile({ profile = true, obj }) {
   const [dropdownBtn, setDropdownBtn] = useState(false);
+  const { reviewer, reviewText, reviewDate, rating } = obj;
 
   return (
-    <div className="w-full md:max-w-[532px] h-[207px] p-5 rounded-xl relative bg-white">
+    <div
+      className="w-full md:max-w-[532px] h-[160px] 
+    hover:shadow-lg transition-all duration-200
+    overflow-hidden p-5 rounded-xl relative bg-white"
+    >
       {/* Overlay that appears when the dropdown is open */}
       {dropdownBtn && (
         <div
@@ -33,15 +39,15 @@ function RaitingProfile({ profile = true }) {
 
       {/* Main content */}
       <div className="flex flex-col gap-3">
-        <div className="flex gap-[18px] items-center relative">
+        <div className="flex gap-[18px] items-center relative border-b border-gray-300 pb-3">
           <img
             src={Demo}
             alt="avt"
             className="w-10 h-10 rounded-full object-cover"
           />
-          <div className="flex flex-col gap-2">
-            <p className="text-gray-900 text-sm font-medium">Nguyễn Trung</p>
-            <p className="text-sm">Raiting</p>
+          <div className="flex flex-col gap-1">
+            <p className="text-gray-900 text-sm font-medium">{`${reviewer.firstName} ${reviewer.lastName}`}</p>
+            <p className="text-[10px] text-gray-400 italic">{reviewDate}</p>
           </div>
           <div className="absolute right-0 top-0">
             {profile ? (
@@ -51,25 +57,12 @@ function RaitingProfile({ profile = true }) {
             ) : null}
           </div>
         </div>
-        <p className="text-gray-700 text-xs h-[42px]">
-          Nếu bạn muốn nghỉ ngơi từ Varanasi, bạn tìm thấy một vị trí tuyệt vời
-          và lòng hiếu khách trong tầng thượng này ở trung tâm của thị trấn.
-          Thức ăn thực sự ngon và nhân viên thực sự tuyệt vời!
+        <p className="text-gray-700 text-xs h-[42px]">{reviewText}</p>
+      </div>
+      <div className="w-full flex justify-end">
+        <p className="text-sm flex items-center gap-1 text-secondary">
+          {rating} <StarIcon size="14" color="#007e47" />
         </p>
-        <div className="flex gap-2">
-          <img
-            src={Demo}
-            className="w-[70px] h-[61px] rounded-lg object-cover"
-          />
-          <img
-            src={Demo}
-            className="w-[70px] h-[61px] rounded-lg object-cover"
-          />
-          <img
-            src={Demo}
-            className="w-[70px] h-[61px] rounded-lg object-cover"
-          />
-        </div>
       </div>
     </div>
   );

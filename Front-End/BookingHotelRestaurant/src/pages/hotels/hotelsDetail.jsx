@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import demo from "../../assets/img/bannerLogin.jpg";
 import DisscountItem from "../../component/hotel/disscountItem";
 import RoomItem from "../../component/hotel/roomItem";
@@ -9,16 +9,91 @@ import ArrDownIcon from "../../assets/icons/arrowDownIcon";
 import RaitingProfile from "../../component/cards/cardRaitingInProfile";
 import ArrowleftIcon from "../../assets/icons/arrowLeftIcon";
 import ArrowrightIcon from "../../assets/icons/arrowRightIcon";
+import { useGlobalContext, useHotels } from "../../context";
+import { useNavigate, useParams } from "react-router-dom";
+import StarIcon from "../../assets/icons/starIcon";
+import LocationIcon from "../../assets/icons/locationIcon";
+import MoneyIcon from "../../assets/icons/moneyIcon";
+import BuildingIcon from "../../assets/icons/building";
+import ServiceIcon from "../../assets/icons/serviceIcon";
+import Modal from "../../component/myModal";
+import StarRating from "../../component/starRating";
+import { useAuth } from "../../context/authContext";
+import { useReview } from "../../context/reviewContext";
 
 function HotelDetail() {
   const [toggleService, setToggleService] = useState(false);
   const [toggleDisscount, setToggleDisscount] = useState(false);
+  const [openReviewFrom, setOpenReviewFrom] = useState(false);
+  const { isHavedAccount } = useAuth();
+  const { id } = useParams();
+  const { hotelDetail, fetchHotelById } = useHotels();
+  const { formatCurrency } = useGlobalContext();
+  const accountName = localStorage.getItem("accountName");
+  const { addNewReview } = useReview();
+  const [resetRating, setResetRating] = useState(false);
+  const [openRoomDetails, setOpenRoomDetails] = useState({});
+
+  const handleScrollOnTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleOpenModal = (roomTypeId) => {
+    setOpenRoomDetails((prevState) => ({
+      ...prevState,
+      [roomTypeId]: true,
+    }));
+  };
+
+  // Hàm xử lý đóng modal
+  const handleCloseModal = (roomTypeId) => {
+    setOpenRoomDetails((prevState) => ({
+      ...prevState,
+      [roomTypeId]: false,
+    }));
+  };
+
+  const [reviewForm, setReviewFrom] = useState({
+    accountName: accountName ? accountName : "",
+    hotelId: +id,
+    rating: null,
+    reviewText: "",
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDataById = async () => {
+      try {
+        await fetchHotelById(id);
+        handleScrollOnTop();
+      } catch (error) {
+        console.error("Đã có lỗi xảy ra: ", error.message);
+      }
+    };
+    fetchDataById();
+  }, [id]);
 
   const infomationsHotel = [
-    { icon: "I", label: "Demo information || demo information" },
-    { icon: "I", label: "Demo information || demo information" },
-    { icon: "I", label: "Demo information || demo information" },
-    { icon: "I", label: "Demo information || demo information" },
+    {
+      icon: <LocationIcon size="20" />,
+      label: hotelDetail?.address || "N/A", // Sử dụng optional chaining
+    },
+    {
+      icon: <MoneyIcon />,
+      label: hotelDetail?.roomTypes?.[0]?.rooms?.[0]?.pricePerNight
+        ? formatCurrency(+hotelDetail.roomTypes[0]?.rooms[0]?.pricePerNight)
+        : "N/A",
+    },
+    {
+      icon: <BuildingIcon size="20" />,
+      label: hotelDetail?.description || "N/A",
+    },
+    {
+      icon: <ServiceIcon />,
+      label: `Khách sạn có ${
+        hotelDetail?.reviews?.length || 0
+      } dịch vụ tiện ích.`,
+    },
   ];
   const offer = [
     { icon: "I", label: "Sun, 06:00 PM - 09:30 PM", amount: 100, status: true },
@@ -30,25 +105,25 @@ function HotelDetail() {
     },
     { icon: "I", label: "Sun, 06:00 PM - 09:30 PM", amount: 100, status: true },
   ];
-  const roomType = [
-    { img: demo, roomType: "Phòng đơn", amount: 2 },
-    { img: demo, roomType: "Phòng đôi", amount: 2 },
-    { img: demo, roomType: "Phòng master", amount: 2 },
-    { img: demo, roomType: "Phòng đơn", amount: 2 },
-  ];
-  const service = [
-    {
-      img: demo,
-      name: "wifi",
-      price: 0,
-      description:
-        "abcncmvmfrkmrsdfgsdkgjsdoigjesroigjseorigjseogihselgrhserdddddddđk",
-    },
-    { img: demo, name: "wifi", price: 500, description: "abcncmvmfrkmrk" },
-    { img: demo, name: "wifi", price: 500, description: "abcncmvmfrkmrk" },
-    { img: demo, name: "wifi", price: 500, description: "abcncmvmfrkmrk" },
-    { img: demo, name: "wifi", price: 500, description: "abcncmvmfrkmrk" },
-  ];
+
+  const handleResetFormReview = () => {
+    setReviewFrom({
+      accountName: accountName ? accountName : "",
+      hotelId: +id,
+      rating: null,
+      reviewText: "",
+    });
+    setResetRating(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await addNewReview(reviewForm, id);
+    if (response) {
+      handleResetFormReview();
+      setOpenReviewFrom(false);
+    }
+  };
   return (
     <div className="w-[1400px] p-5 pb-10 h-auto flex gap-4">
       {/* left pane */}
@@ -90,12 +165,22 @@ function HotelDetail() {
         {/* Infomation Hotels */}
         <div className="w-full bg-white py-8 px-6 rounded-xl flex flex-col gap-5">
           <div className="flex justify-between items-center border-b-seconGray border-b-[1px] border-opacity-50 pb-4">
-            <Text className={"text-[28px] font-medium"}>Hotels Demos</Text>
+            <Text className={"text-[28px] font-medium"}>
+              {hotelDetail ? hotelDetail.hotelName : "N/A"}
+            </Text>
             <div className="flex gap-1">
               <div className="flex text-primary gap-2">
-                I<p>4.5 Starts |</p>
+                <StarIcon color="#007e47" size="20" />
+                <p>4.5 Starts |</p>
               </div>
-              <p className="text-secondary">450 Reviews</p>
+              <p className="text-secondary">
+                {`${
+                  hotelDetail?.reviews?.length > 0
+                    ? hotelDetail.reviews.length
+                    : 0
+                }`}{" "}
+                Reviews
+              </p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-y-5">
@@ -152,9 +237,54 @@ function HotelDetail() {
             Các loại phòng
           </Text>
           <div className="grid grid-cols-6 gap-y-3">
-            {roomType.map((room, index) => (
-              <RoomItem obj={room} key={index} />
-            ))}
+            {hotelDetail &&
+              hotelDetail.roomTypes?.map((roomType) => {
+                return (
+                  <div key={roomType.roomTypeId}>
+                    <RoomItem
+                      onClick={() => handleOpenModal(roomType.roomTypeId)}
+                      obj={roomType}
+                    />
+                    <Modal
+                      isOpen={openRoomDetails[roomType.roomTypeId] || false}
+                      onClose={() => handleCloseModal(roomType.roomTypeId)}
+                      closeBtn={true}
+                      className={"w-3/5 h-[620px] overflow-y-auto"}
+                      title={`${roomType.typeName}`}
+                    >
+                      <div className="flex flex-col px-20 gap-5">
+                        {roomType?.rooms &&
+                          roomType?.rooms?.map((room) => (
+                            <div
+                              key={room.roomId}
+                              className="w-full shadow rounded-xl border border-seconGray p-5
+                              hover:shadow-[#00747e] hover:shadow-md transition-all duration-300 ease-in-out"
+                            >
+                              <div className="flex mb-5">
+                                <div className="text-primary w-[150px]">
+                                  <p>Mô tả: </p>
+                                  <p>Giá phòng : </p>
+                                </div>
+                                <div className="text-secondary">
+                                  <p>{room.description}</p>
+                                  <p>{`${formatCurrency(
+                                    +room.pricePerNight
+                                  )} / đêm`}</p>
+                                </div>
+                              </div>
+                              <div className="w-full h-[250px] rounded-lg">
+                                <img
+                                  src={demo}
+                                  className="w-full h-full rounded-lg object-cover"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </Modal>
+                  </div>
+                );
+              })}
           </div>
         </div>
         {/* service */}
@@ -179,9 +309,10 @@ function HotelDetail() {
             )}
           </div>
           <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-            {service.map((ser, index) => (
-              <ServiceItem key={index} obj={ser} />
-            ))}
+            {hotelDetail &&
+              hotelDetail.services?.map((service) => (
+                <ServiceItem key={service.serviceId} obj={service} />
+              ))}
           </div>
         </div>
         {/* Reviews */}
@@ -199,25 +330,111 @@ function HotelDetail() {
                 Đánh giá & Đánh giá tổng thể
               </p>
               <h3 className="text-[57px] text-secondary">5</h3>
-              <div className="text-secondary">*****</div>
+              <div className="text-secondary flex mb-5">
+                <StarIcon color="#007e47" />
+                <StarIcon color="#007e47" />
+                <StarIcon color="#007e47" />
+                <StarIcon color="#007e47" />
+                <StarIcon color="#007e47" />
+              </div>
               <p className="text-[#5F5F5F] font-medium">
                 Dựa trên 200 reviews.{" "}
-                <a className="text-secondary underline cursor-pointer font-normal">
-                  Đánh giá ngay
-                </a>
+                {isHavedAccount ? (
+                  <a
+                    onClick={() => setOpenReviewFrom(true)}
+                    className="text-secondary underline cursor-pointer font-normal"
+                  >
+                    Đánh giá ngay
+                  </a>
+                ) : (
+                  <a
+                    onClick={() => navigate("/login")}
+                    className="text-secondary underline cursor-pointer font-normal"
+                  >
+                    Đăng nhập để đánh giá.
+                  </a>
+                )}
               </p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-5">
-            <RaitingProfile profile={false} />
-            <RaitingProfile profile={false} />
-            <RaitingProfile profile={false} />
-            <RaitingProfile profile={false} />
+            {hotelDetail &&
+              hotelDetail.reviews?.map((review) => (
+                <RaitingProfile
+                  key={review.hotelReviewId}
+                  profile={false}
+                  obj={review}
+                />
+              ))}
           </div>
         </div>
       </div>
       {/* right pane */}
       <div className="bg-slate-950 w-[30%] h-screen"></div>
+      {/* Form review */}
+      <Modal
+        isOpen={openReviewFrom}
+        onClose={() => {
+          setOpenReviewFrom(false);
+          handleResetFormReview();
+        }}
+        title="Đánh giá và FeedBack"
+        closeBtn={true}
+        className={"h-[500px] overflow-y-auto"}
+      >
+        <div className="w-full flex flex-col gap-10">
+          <div className="flex flex-col gap-5">
+            <Text>Trải nghiệm thật tuyệt vời khi ở đây ?</Text>
+            <StarRating
+              reset={resetRating}
+              toggle={setResetRating}
+              onChange={(newRaiting) =>
+                setReviewFrom((prev) => ({
+                  ...prev,
+                  rating: newRaiting,
+                }))
+              }
+            />
+          </div>
+          <div className="flex flex-col gap-5">
+            <Text>Điều gì khiến bạn ấn tượng ?</Text>
+            <textarea
+              value={reviewForm.reviewText}
+              onChange={(e) =>
+                setReviewFrom((prev) => ({
+                  ...prev,
+                  reviewText: e.target.value,
+                }))
+              }
+              className="w-full border rounded-lg border-secondary h-[150px] p-4 text-primary"
+            />
+            <div className="flex justify-end">
+              <div className="flex gap-5">
+                <button
+                  onClick={() => {
+                    setOpenReviewFrom(false);
+                    handleResetFormReview();
+                  }}
+                  className="px-8 py-2 bg-white border rounded-xl
+                 font-medium border-seconGray text-seconGray
+                 hover:bg-seconGray hover:text-white transition-colors duration-200 ease-in-out"
+                >
+                  Hủy
+                </button>
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  className="px-8 py-2 bg-white border rounded-xl
+                 font-medium border-secondary text-secondary
+                 hover:bg-secondary hover:text-white transition-colors duration-200 ease-in-out"
+                >
+                  Gửi
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      {/* Room Detail */}
     </div>
   );
 }

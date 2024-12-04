@@ -32,34 +32,10 @@ export const HotelProvider = ({ children }) => {
     fetchHotels(queryString);
   }, [queryParam]);
 
-  //   useEffect(() => {
-  //     const queryParams = [];
-  //     if (query.hotelName)
-  //       queryParams.push(`hotelName=${encodeURIComponent(query.hotelName)}`);
-  //     if (query.categoryId)
-  //       queryParams.push(`categoryId=${encodeURIComponent(query.categoryId)}`);
-  //     if (query.locationId)
-  //       queryParams.push(`locationId=${encodeURIComponent(query.locationId)}`);
-  //     if (query.sortByCategory)
-  //       queryParams.push(
-  //         `sortByCategory=${encodeURIComponent(query.sortByCategory)}`
-  //       );
-  //     if (query.sortByPrice)
-  //       queryParams.push(`sortByPrice=${encodeURIComponent(query.sortByPrice)}`);
-  //     if (query.page) queryParams.push(`page=${encodeURIComponent(query.page)}`);
-  //     if (query.pageSize)
-  //       queryParams.push(`pageSize=${encodeURIComponent(query.pageSize)}`);
-
-  //     const queryString = queryParams.join("&");
-
-  //     fetchHotels(queryString);
-  //   }, [query]);
-
   const fetchHotels = async (query) => {
     try {
       setLoading(true);
       const response = await getHotels(query);
-      console.log("response", response);
 
       setHotels(response.data);
       setTotalHotels(response.totalCount);
@@ -77,7 +53,6 @@ export const HotelProvider = ({ children }) => {
       setLoading(true);
       const response = await getHotelsById(id);
       setHotelDetail(response.data);
-      setNotification(response.message);
     } catch (error) {
       console.error("Đã có lỗi xảy ra ở fetch by id: ", error.message);
     } finally {

@@ -7,7 +7,7 @@
 
 .products__filters {
   width: 20%;
-  height: auto;
+  height: 970px;
   margin: 20px 0;
   background-color: #fff;
   padding: 20px;
@@ -17,7 +17,7 @@
 
 .products__list {
   width: 80%;
-  margin: 20px ;
+  margin: 20px;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
