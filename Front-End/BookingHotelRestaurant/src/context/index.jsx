@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthProvider } from "./authContext";
 import { jwtDecode } from "jwt-decode";
+import { HotelProvider, HotelsContext } from "./hotelsContext";
 
 const GobalContext = createContext();
 export const GobalProvider = ({ children }) => {
@@ -14,6 +15,18 @@ export const GobalProvider = ({ children }) => {
     const daysUntilExpiry = timeDifference / (1000 * 60 * 60 * 24);
     return daysUntilExpiry;
   };
+
+  function formatCurrency(amount) {
+    if (amount) {
+      // Chuyển số thành chuỗi và thêm dấu phân cách mỗi 3 chữ số
+      const formattedAmount = amount.toLocaleString("vi-VN");
+
+      // Trả về kết quả với đơn vị "VNĐ"
+      return `${formattedAmount} VNĐ`;
+    } else {
+      return 0;
+    }
+  }
 
   function formatDate(date) {
     const day = String(date.getDate()).padStart(2, "0"); // Đảm bảo ngày có 2 chữ số
@@ -43,14 +56,18 @@ export const GobalProvider = ({ children }) => {
         setNotification,
         isTokenExpired,
         handleExpiryDate,
+        formatCurrency,
       }}
     >
-      <AuthProvider>{children}</AuthProvider>
+      <AuthProvider>
+        <HotelProvider>{children}</HotelProvider>
+      </AuthProvider>
     </GobalContext.Provider>
   );
 };
 
 export const useGlobalContext = () => useContext(GobalContext);
+export const useHotels = () => useContext(HotelsContext);
 export const getCookie = (name) => {
   const cookieArr = document.cookie.split(",");
   for (let cookie of cookieArr) {

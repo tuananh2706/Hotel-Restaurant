@@ -11,6 +11,8 @@ import LoginPage from "../pages/auth/login";
 import RegisterPage from "../pages/auth/register";
 import ChangePassword from "../pages/profile/tabs/changePassword";
 import ChangeInformations from "../pages/profile/tabs/changeInformations";
+import Hotels from "../pages/hotels";
+import HotelDetail from "../pages/hotels/hotelsDetail";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +66,14 @@ const router = createBrowserRouter([
         path: "register",
         element: <RegisterPage />,
       },
+      {
+        path: "hotels",
+        element: <Hotels />,
+      },
+      {
+        path:"hotels/:id",
+        element: <HotelDetail />,
+      }
     ],
   },
 ]);

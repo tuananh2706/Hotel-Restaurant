@@ -13,6 +13,8 @@ function Button({ children, variant = "default", className, ...rest }) {
       realClass =
         "text-primary border border-primary hover:bg-secondary hover:text-white ";
       break;
+    case "danger" :
+      realClass = "text-white border border-danger bg-danger hover:bg-opacity-90";;
   }
 
   return (

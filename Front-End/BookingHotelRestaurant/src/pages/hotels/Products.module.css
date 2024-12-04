@@ -1,0 +1,121 @@
+.products {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+}
+
+.products__filters {
+  width: 20%;
+  height: auto;
+  margin: 20px 0;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.products__list {
+  width: 80%;
+  margin: 20px ;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.products__filter-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.products__filter-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.products__filter-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.products__filter-item input[type="checkbox"] {
+  margin: 0;
+}
+
+.products__filter-item label {
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.products__items {
+  margin-left: 20px;
+}
+
+.products__items strong {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .products {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .products__filters,
+  .products__list {
+    width: 90%;
+    margin: 10px 0;
+  }
+
+  .products__filter-group {
+    margin-bottom: 15px;
+  }
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination-button {
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  border-radius: 0.25rem;
+  background-color: #e2e8f0;
+  color: #4a5568;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+  background-color: #cbd5e0;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-button.active {
+  background-color: #4299e1;
+  color: white;
+}
+
+.pagination-button.previous,
+.pagination-button.next {
+  background-color: #e2e8f0;
+}
+
+.pagination-button.previous:hover,
+.pagination-button.next:hover {
+  background-color: #cbd5e0;
+}
