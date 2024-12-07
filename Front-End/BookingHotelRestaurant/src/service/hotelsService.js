@@ -62,3 +62,15 @@ export const activateHotel = async (id) => {
     throw error;
   }
 };
+
+export const editInfoHotels = async (id, payload) => {
+  try {
+    const response = await apiClient.put(
+      `/Hotel/${id}`,
+      JSON.stringify(payload)
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Đã có lỗi xảy ra: ", error.message);
+  }
+};

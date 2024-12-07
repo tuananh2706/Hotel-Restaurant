@@ -7,7 +7,38 @@ import LocationIcon from "../../../../assets/icons/locationIcon";
 import RoomIcon from "../../../../assets/icons/roomsIcon";
 import ServiceIcon from "../../../../assets/icons/serviceIcon";
 import RaitingProfile from "../../../../component/cards/cardRaitingInProfile";
-import { disableHotel } from "../../../../service/hotelsService";
+import {
+  disableHotel,
+  editInfoHotels,
+} from "../../../../service/hotelsService";
+import EditableField from "../../../../component/editableField";
+
+const categories = [
+  { id: 1, name: "Khách sạn 1 sao" },
+  { id: 2, name: "Khách sạn 2 sao" },
+  { id: 3, name: "Khách sạn 3 sao" },
+  { id: 4, name: "Khách sạn 4 sao" },
+  { id: 5, name: "Khách sạn 5 sao" },
+];
+
+const localtions = [
+  { id: 1, label: "1" },
+  { id: 2, label: "2" },
+  { id: 3, label: "3" },
+  { id: 4, label: "4" },
+  { id: 5, label: "5" },
+  { id: 6, label: "6" },
+  { id: 7, label: "7" },
+  { id: 8, label: "8" },
+  { id: 9, label: "9" },
+  { id: 10, label: "10" },
+  { id: 11, label: "11" },
+  { id: 12, label: "12" },
+  { id: 13, label: "Gò Vấp" },
+  { id: 14, label: "Bình Thạnh" },
+  { id: 15, label: "Tân Phú" },
+  { id: 16, label: "Tân Bình" },
+];
 
 function HotelsManagementDetail() {
   const navigate = useNavigate();
@@ -17,60 +48,98 @@ function HotelsManagementDetail() {
     navigate(-1);
   };
 
+  const [flag, setFlage] = useState(false);
   const { formatCurrency } = useGlobalContext();
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditRoomModal, setOpenEditRoomModal] = useState(false);
+
   const [openDisable, setOpenDisable] = useState(false);
 
-  const [hotelInfo, setHotelInfo] = useState({
-    hotelName: hotelDetail?.hotelName,
-    address: hotelDetail?.address,
-    description: hotelDetail?.description,
-  });
-  const [roomTypes, setRoomTypes] = useState(hotelDetail?.roomTypes);
-  const [services, setServices] = useState(hotelDetail?.services);
+  const [editHotelInfo, setEditHotelInfo] = useState({});
+  const [editRoomType, setEditRoomType] = useState([]);
 
-  const handleSaveHotelInfo = async () => {
-    alert("Hotel info saved!");
-    // Call API to save hotel info here
+  const handleChangeValueHotelInfo = (fieldName, newValue) => {
+    setEditHotelInfo((prev) => ({
+      ...prev,
+      [fieldName]: newValue,
+    }));
+  };
+  const handleRoomTypeFieldSave = (roomTypeIndex, fieldName, value) => {
+    const updatedRoomTypes = [...editRoomType];
+    updatedRoomTypes[roomTypeIndex][fieldName] = value;
+    setEditRoomType(updatedRoomTypes);
   };
 
-  // Handle adding room type
-  const handleAddRoom = (roomTypeId) => {
-    const newRoom = {
-      roomId: Date.now(),
-      pricePerNight: 0,
+  const handleRoomFieldSave = (roomTypeIndex, roomIndex, fieldName, value) => {
+    const updatedRoomTypes = [...editRoomType];
+    updatedRoomTypes[roomTypeIndex].rooms[roomIndex][fieldName] = value;
+    setEditRoomType(updatedRoomTypes);
+  };
+
+  const deleteRoom = (roomTypeIndex, roomIndex) => {
+    const updatedRoomTypes = [...editRoomType];
+    updatedRoomTypes[roomTypeIndex].rooms.splice(roomIndex, 1);
+    setEditRoomType(updatedRoomTypes);
+  };
+
+  const deleteRoomType = (roomTypeIndex) => {
+    const updatedRoomTypes = [...editRoomType];
+    updatedRoomTypes.splice(roomTypeIndex, 1);
+    setEditRoomType(updatedRoomTypes);
+  };
+
+  const addNewRoomType = () => {
+    setEditRoomType([
+      ...roomTypes,
+      {
+        roomTypeId: null,
+        hotelId: roomTypes[0]?.hotelId || 0,
+        typeName: "",
+        rooms: [],
+      },
+    ]);
+  };
+
+  const addNewRoom = (roomTypeIndex) => {
+    const updatedRoomTypes = [...roomTypes];
+    updatedRoomTypes[roomTypeIndex].rooms.push({
+      roomId: null,
+      pricePerNight: "0",
       description: "",
+      status: "available",
+      maxOccupancy: "1",
+      roomCount: "1",
       imageUrls: [],
-    };
-    const updatedRoomTypes = roomTypes.map((roomType) =>
-      roomType.roomTypeId === roomTypeId
-        ? { ...roomType, rooms: [...roomType.rooms, newRoom] }
-        : roomType
-    );
-    setRoomTypes(updatedRoomTypes);
+    });
+    setEditRoomType(updatedRoomTypes);
   };
 
-  // Handle saving room data
-  const handleSaveRoom = (roomTypeId, roomId, updatedRoom) => {
-    const updatedRoomTypes = roomTypes.map((roomType) =>
-      roomType.roomTypeId === roomTypeId
-        ? {
-            ...roomType,
-            rooms: roomType.rooms.map((room) =>
-              room.roomId === roomId ? updatedRoom : room
-            ),
-          }
-        : roomType
-    );
-    setRoomTypes(updatedRoomTypes);
+  const handleSubmit = () => {
+    // Format data according to API requirements
+    const payload = editRoomType?.map((roomType) => ({
+      ...roomType,
+      rooms: editRoomType.rooms?.map((room) => ({
+        ...room,
+        pricePerNight: Number(room.pricePerNight),
+        maxOccupancy: Number(room.maxOccupancy),
+        roomCount: Number(room.roomCount),
+      })),
+    }));
+
+    console.log("Payload for API:", payload);
+    // Here you would make your API call
   };
 
-  // Handle editing service
-  const handleSaveService = (updatedService) => {
-    const updatedServices = services.map((service) =>
-      service.serviceId === updatedService.serviceId ? updatedService : service
-    );
-    setServices(updatedServices);
+  const handleSaveHotelInfo = async (e) => {
+    e.preventDefault();
+    console.log("Thông tin chỉnh sửa: ", editHotelInfo);
+    console.log("Thông tin ban đầu: ", hotelDetail);
+    try {
+      await editInfoHotels(id, editHotelInfo);
+      setOpenEditModal(false);
+      setFlage(!flag);
+      alert("Thành công!");
+    } catch (error) {}
   };
 
   const handleDeactivateHotel = async () => {
@@ -89,7 +158,26 @@ function HotelsManagementDetail() {
   };
   useEffect(() => {
     fetchData();
-  }, [id]);
+  }, [id, flag]);
+
+  useEffect(() => {
+    if (hotelDetail) {
+      setEditHotelInfo({
+        hotelName: hotelDetail.hotelName,
+        address: hotelDetail.address,
+        description: hotelDetail.description,
+        categoryId: hotelDetail.categoryId,
+        locationId: hotelDetail.locationId,
+        isActive: hotelDetail.isActive,
+      });
+      if(hotelDetail?.roomTypes) {
+        setEditRoomType(hotelDetail.roomTypes);
+      }else{
+        setEditRoomType([]);
+      }
+      console.log("editRoomType",editRoomType);
+    }
+  }, [hotelDetail]);
 
   const arrImgs = [demo, demo, demo, demo];
   return (
@@ -157,6 +245,15 @@ function HotelsManagementDetail() {
                   )}
                 </div>
               </div>
+              {/* Chỉnh sửa thông tin */}
+              <div className="w-full flex mt-5 pb-5 justify-end pr-10 border-b border-b-seconGray ">
+                <button
+                  onClick={() => setOpenEditModal(true)}
+                  className="p-3 text-senconBlue opacity-80 transition-all duration-200 hover:opacity-100 hover:underline text-base scale-95"
+                >
+                  Chỉnh sửa thông tin khách sạn
+                </button>
+              </div>
               {/* roomType */}
               <div className="border border-seconGray min-h-[150px] flex flex-col gap-5 p-5 rounded-lg shadow">
                 <h5 className="text-2xl text-secondary font-medium">
@@ -169,6 +266,14 @@ function HotelsManagementDetail() {
                     >{`${roomType.typeName} (${roomType?.rooms.length})`}</p>
                   ))}
                 </div>
+              </div>
+              <div className="w-full flex pb-5 justify-end pr-10 border-b border-b-seconGray ">
+                <button
+                  onClick={() => setOpenEditRoomModal(true)}
+                  className="p-3 text-senconBlue opacity-80 transition-all duration-200 hover:opacity-100 hover:underline text-base scale-95"
+                >
+                  Chỉnh sửa thông tin phòng và loại phòng
+                </button>
               </div>
               {/* Service */}
               <div className="border border-seconGray min-h-[150px] flex flex-col gap-5 p-5 rounded-lg shadow">
@@ -219,215 +324,217 @@ function HotelsManagementDetail() {
             >
               Vô hiệu hóa KS
             </button>
-            <button
-              onClick={() => setOpenEditModal(true)}
-              className="px-5 py-2 rounded-lg border bg-secondary  transition-all duration-200 ease-in-out
-             opacity-70 hover:opacity-100 text-white font-medium active:scale-95"
-            >
-              Sửa thông tin
-            </button>
           </div>
 
-          {/* Modal Edit Hotels */}
+          {/* Modal Edit Infomations Hotels */}
           <Modal
             isOpen={openEditModal}
             onClose={() => setOpenEditModal(false)}
             closeBtn={true}
-            className={"w-3/4 max-h-[700px] overflow-y-auto"}
+            className={"w-auto max-h-[700px] overflow-y-auto"}
             title="Thay đổi thông tin khách sạn"
           >
-            {/* Hotel Info Section */}
-            <div className="mb-6">
-              <h3 className="text-xl text-primary font-medium mb-2">
-                Hotel Information
-              </h3>
-              <div className="mb-4">
-                <label className="block text-secondary text-sm font-medium mb-1">
-                  Hotel Name
-                </label>
-                <input
-                  type="text"
-                  value={hotelInfo.hotelName}
-                  onChange={(e) =>
-                    setHotelInfo({ ...hotelInfo, hotelName: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 text-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-secondary"
+            {editHotelInfo && (
+              <div className="flex flex-col gap-5 w-[500px]">
+                <EditableField
+                  fieldName={"hotelName"}
+                  fieldValue={editHotelInfo.hotelName}
+                  label={"Tên khách sạn"}
+                  onSave={handleChangeValueHotelInfo}
                 />
-              </div>
-              <div className="mb-4">
-                <label className="block text-secondary text-sm font-medium mb-1">
-                  Address
-                </label>
-                <input
-                  type="text"
-                  value={hotelInfo.address}
-                  onChange={(e) =>
-                    setHotelInfo({ ...hotelInfo, address: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 text-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-secondary"
+                <EditableField
+                  fieldName={"address"}
+                  fieldValue={editHotelInfo.address}
+                  label={"Địa chỉ"}
+                  onSave={handleChangeValueHotelInfo}
                 />
-              </div>
-              <div className="mb-4">
-                <label className="block text-secondary text-sm font-medium mb-1">
-                  Description
-                </label>
-                <textarea
-                  value={hotelInfo.description}
-                  onChange={(e) =>
-                    setHotelInfo({ ...hotelInfo, description: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 text-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-secondary"
+                <EditableField
+                  fieldName={"description"}
+                  fieldValue={editHotelInfo.description}
+                  label={"Mô tả"}
+                  onSave={handleChangeValueHotelInfo}
                 />
-              </div>
-              <button
-                onClick={handleSaveHotelInfo}
-                className="bg-secondary font-medium opacity-80 hover:opacity-100 transition-all duration-200 text-white px-4 py-2 rounded-md "
-              >
-                Xác nhận thay đổi thông tin
-              </button>
-            </div>
-
-            {/* Room Types Section */}
-            <div className="mb-6">
-              <h3 className="text-xl text-primary font-medium mb-2">
-                Room Types
-              </h3>
-              {roomTypes &&
-                roomTypes.map((roomType) => (
-                  <div key={roomType.roomTypeId} className="mb-4">
-                    <h4 className="text-md font-medium text-secondary">
-                      {roomType.typeName}
-                    </h4>
-                    {roomType.rooms?.map((room) => (
-                      <div
-                        key={room.roomId}
-                        className="border-t border-gray-300 py-2"
-                      >
-                        <p>Giá phòng: </p>
-                        <input
-                          type="number"
-                          value={room.pricePerNight}
-                          onChange={(e) => {
-                            const updatedRoom = {
-                              ...room,
-                              pricePerNight: parseFloat(e.target.value),
-                            };
-                            handleSaveRoom(
-                              roomType.roomTypeId,
-                              room.roomId,
-                              updatedRoom
-                            );
-                          }}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md mb-2"
-                        />
-                        <p>Mô tả:</p>
-                        <textarea
-                          value={room.description}
-                          onChange={(e) => {
-                            const updatedRoom = {
-                              ...room,
-                              description: e.target.value,
-                            };
-                            handleSaveRoom(
-                              roomType.roomTypeId,
-                              room.roomId,
-                              updatedRoom
-                            );
-                          }}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md mb-2"
-                        />
-                        <button
-                          onClick={() =>
-                            handleSaveRoom(
-                              roomType.roomTypeId,
-                              room.roomId,
-                              room
-                            )
-                          }
-                          className="bg-success font-medium opacity-80 hover:opacity-100 transition-all duration-200 text-white px-4 py-2 rounded-md "
-                        >
-                          Lưu thông tin
-                        </button>
-                      </div>
-                    ))}
-                    <button
-                      onClick={() => handleAddRoom(roomType.roomTypeId)}
-                      className="bg-warning font-medium text-white px-4 py-2 rounded-md opacity-80 hover:opacity-100 transition-all duration-200 mt-2"
-                    >
-                      Thêm phòng
-                    </button>
-                  </div>
-                ))}
-            </div>
-
-            {/* Services Section */}
-            <div>
-              <h3 className="text-lg font-medium mb-2">Services</h3>
-              {services &&
-                services.map((service) => (
-                  <div
-                    key={service.serviceId}
-                    className="border-t border-gray-300 py-2"
+                <div className="w-full flex justify-between px-10">
+                  <select
+                    className="focus:outline-none p-3 border border-seconGray text-secondary focus:border-secondary rounded-lg"
+                    name="categoryId"
+                    id="categoryId"
+                    value={editHotelInfo.categoryId}
+                    onChange={(e) =>
+                      setEditHotelInfo((prev) => ({
+                        ...prev,
+                        [e.target.name]: +e.target.value,
+                      }))
+                    }
                   >
-                    <p>Service Name:</p>
-                    <input
-                      type="text"
-                      value={service.serviceName}
-                      onChange={(e) =>
-                        handleSaveService({
-                          ...service,
-                          serviceName: e.target.value,
-                        })
-                      }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md mb-2"
-                    />
-                    <p>Service Price:</p>
-                    <input
-                      type="number"
-                      value={service.servicePrice}
-                      onChange={(e) =>
-                        handleSaveService({
-                          ...service,
-                          servicePrice: parseFloat(e.target.value),
-                        })
-                      }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md mb-2"
-                    />
-                    <p>Description:</p>
-                    <textarea
-                      value={service.description}
-                      onChange={(e) =>
-                        handleSaveService({
-                          ...service,
-                          description: e.target.value,
-                        })
-                      }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md mb-2"
-                    />
-                    <button
-                      onClick={() => handleSaveService(service)}
-                      className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600"
-                    >
-                      Save Service
-                    </button>
-                  </div>
-                ))}
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="focus:outline-none p-3 border border-seconGray text-secondary focus:border-secondary rounded-lg"
+                    name="locationId"
+                    id="locationId"
+                    value={editHotelInfo.locationId}
+                    onChange={(e) =>
+                      setEditHotelInfo((prev) => ({
+                        ...prev,
+                        [e.target.name]: +e.target.value,
+                      }))
+                    }
+                  >
+                    {localtions.map((localtion) => (
+                      <option
+                        key={localtion.id}
+                        value={localtion.id}
+                      >{`Quận ${localtion.label}`}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+            <div className="w-full flex justify-end mt-5 gap-5 pr-5">
               <button
-                onClick={() => {
-                  const newService = {
-                    serviceId: Date.now(),
-                    serviceName: "",
-                    servicePrice: 0,
-                    description: "",
-                  };
-                  setServices([...services, newService]);
-                }}
-                className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 mt-2"
+                className="p-3 bg-secondary text-white font-medium rounded-md opacity-80 hover:opacity-100 transition-all duration-200 active:scale-95"
+                onClick={handleSaveHotelInfo}
               >
-                Add Service
+                Lưu thông tin
               </button>
             </div>
           </Modal>
+
+          {/* Modal Edit roomType and room */}
+          <Modal
+            isOpen={openEditRoomModal}
+            onClose={() => setOpenEditRoomModal(false)}
+            className={"w-auto max-h-[700px] overflow-y-auto"}
+            closeBtn={true}
+          >
+            {editRoomType && (
+              <div className="w-[500px]">
+               
+                <div className="w-full flex justify-end">
+                  <button
+                    onClick={addNewRoomType}
+                    className="text-senconBlue font-medium"
+                  >
+                    Thêm loại phòng mới
+                  </button>
+                </div>
+                
+                {editRoomType.map((roomType, index) => (
+                  <div key={index} className="mb-6">
+                    <div>
+                      <div>
+                        <EditableField
+                          fieldName={"typeName"}
+                          fieldValue={roomType.typeName}
+                          label={"Tên loại phòng"}
+                          onSave={(fieldName, value) =>
+                            handleRoomTypeFieldSave(index, fieldName, value)
+                          }
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <div>
+                          <button onClick={() => addNewRoom(index)}>
+                            Thêm phòng
+                          </button>
+                          <button onClick={() => deleteRoomType(index)}>
+                            Xóa loại phòng
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      {roomType?.rooms?.map((room, roomIndex) => (
+                        <div key={roomIndex}>
+                          <EditableField
+                            fieldName={"pricePerNight"}
+                            fieldValue={room.pricePerNight}
+                            label={"Giá qua đêm"}
+                            onSave={(fieldName, value) =>
+                              handleRoomFieldSave(
+                                index,
+                                roomIndex,
+                                fieldName,
+                                value
+                              )
+                            }
+                          />
+                          <EditableField
+                            fieldName={"maxOccupancy"}
+                            fieldValue={room.maxOccupancy}
+                            label={"Số người: "}
+                            onSave={(fieldName, value) =>
+                              handleRoomFieldSave(
+                                index,
+                                roomIndex,
+                                fieldName,
+                                value
+                              )
+                            }
+                          />
+                          <EditableField
+                            fieldName={"roomCount"}
+                            fieldValue={room.roomCount}
+                            label={"Số lượng phòng"}
+                            onSave={(fieldName, value) =>
+                              handleRoomFieldSave(
+                                index,
+                                roomIndex,
+                                fieldName,
+                                value
+                              )
+                            }
+                          />
+                          <EditableField
+                            fieldName={"status"}
+                            fieldValue={room.status}
+                            label={"Trạng thái"}
+                            onSave={(fieldName, value) =>
+                              handleRoomFieldSave(
+                                index,
+                                roomIndex,
+                                fieldName,
+                                value
+                              )
+                            }
+                          />
+                          <EditableField
+                            fieldName={"description"}
+                            fieldValue={room.description}
+                            label={"Mô tả"}
+                            onSave={(fieldName, value) =>
+                              handleRoomFieldSave(
+                                index,
+                                roomIndex,
+                                fieldName,
+                                value
+                              )
+                            }
+                          />
+                          <div>
+                            <button
+                              onClick={() => deleteRoom(index, roomIndex)}
+                            >
+                              Xóa phòng
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <button onClick={handleSubmit}>Lưu thay đổi</button>
+          </Modal>
+
+          {/* Modal disable */}
           <Modal
             isOpen={openDisable}
             className={"min-w-[500px]"}
