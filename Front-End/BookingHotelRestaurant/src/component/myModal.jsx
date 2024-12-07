@@ -31,6 +31,18 @@ const Modal = ({
     };
   }, [isOpen, onClose]);
   // sử dụng useEffect để xử lý sự kiện ấn nút để thoát.
+  useEffect(() => {
+    // Chặn cuộn khi modal mở
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto"; // Khôi phục cuộn khi đóng modal
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // Đảm bảo khôi phục khi component unmount
+    };
+  }, [isOpen]);
   return (
     <div
       className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 z-50 ${
@@ -41,7 +53,7 @@ const Modal = ({
       }} // Click bên ngoài bg thì sẽ tắt được.
     >
       <div
-        className={`bg-white rounded-lg shadow-lg p-5 w-1/3 h-auto relative  transition-all duration-300 ${
+        className={`bg-white rounded-lg shadow-lg p-5 w-1/3 relative  transition-all duration-300 ${
           isOpen ? "opacity-100 scale-100" : "opacity-0 scale-90"
         } ${className} modal-content`}
         onClick={(e) => {
@@ -50,14 +62,14 @@ const Modal = ({
       >
         {closeBtn && (
           <button
-            className="absolute right-3 opacity-50 hover:opacity-100 transition-opacity duration-100 top-6 flex items-center justify-center"
+            className="absolute right-10 opacity-50 hover:opacity-100 transition-opacity duration-100 top-6 flex items-center justify-center"
             onClick={onClose}
           >
             <CloseCircleIcon />
           </button>
         )}
         {title && (
-          <h2 className="text-xl font-medium mb-4 border-b-2 p-2 border-slate-200 ">
+          <h2 className="text-xl font-medium mb-4 border-b-2 p-2 border-slate-200">
             {title}
           </h2>
         )}

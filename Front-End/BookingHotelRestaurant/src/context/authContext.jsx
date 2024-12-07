@@ -3,9 +3,12 @@ import {
   authenticateUser,
   changeInformations,
   changePassword,
+  deleteAccount,
+  getAllCounts,
   getInforUser,
+  registerAdmin,
   registerUser,
-} from "../service/AuthService";
+} from "../service/authService";
 import { useGlobalContext } from ".";
 import { refreshTokenfnc } from "../service/tokenService";
 import Cookies from "js-cookie";
@@ -87,13 +90,26 @@ export const AuthProvider = ({ children }) => {
         accountName: registerRequest.userName,
         email: registerRequest.email,
         password: registerRequest.password,
-        firstName: "",
-        lastName: "",
+        firstName:
+          (registerRequest.firstName && registerRequest.firstName) || "",
+        lastName: (registerRequest.lastName && registerRequest.lastName) || "",
       });
       setNotification(response);
       return response;
     } catch (error) {
       console.error("Đã có lỗi trong lúc đăng ký: ", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const registerAccountAdmin = async (registerAdminRequest) => {
+    try {
+      setLoading(true);
+      await registerAdmin(registerAdminRequest);
+      return true;
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra!");
     } finally {
       setLoading(false);
     }
@@ -147,9 +163,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const changeInformationsUser = async (request) => {
+  const changeInformationsUser = async (request, account) => {
     try {
-      const accountName = localStorage.getItem("accountName");
+      let accountName = "";
+      if (!account) {
+        accountName = localStorage.getItem("accountName");
+      } else {
+        accountName = account;
+      }
       const accessToken = localStorage.getItem("AT");
       const response = await changeInformations(
         request,
@@ -164,6 +185,30 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchAccounts = async () => {
+    try {
+      const response = await getAllCounts();
+      return response;
+    } catch (error) {
+      console.error(
+        "Đã có lỗi xảy ra khi thay đổi password: ",
+        error.response || error.message
+      );
+    }
+  };
+
+  const removeAccount = async (accountName) => {
+    try {
+      await deleteAccount(accountName);
+      return true;
+    } catch (error) {
+      console.error(
+        "Đã có lỗi xảy ra khi thay đổi password: ",
+        error.response || error.message
+      );
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -174,6 +219,9 @@ export const AuthProvider = ({ children }) => {
         login,
         changePasswordUser,
         changeInformationsUser,
+        fetchAccounts,
+        removeAccount,
+        registerAccountAdmin,
       }}
     >
       {children}

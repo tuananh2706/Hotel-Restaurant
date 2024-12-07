@@ -13,6 +13,14 @@ import ChangePassword from "../pages/profile/tabs/changePassword";
 import ChangeInformations from "../pages/profile/tabs/changeInformations";
 import Hotels from "../pages/hotels";
 import HotelDetail from "../pages/hotels/hotelsDetail";
+import AdminPage from "../pages/admin/mainAdmin";
+import Dashboard from "../pages/admin/mainAdmin/dashboard";
+import Accounts from "../pages/admin/mainAdmin/accounts";
+import HotelsManagement from "../pages/admin/mainAdmin/hotelsManagement";
+import Bookings from "../pages/admin/mainAdmin/bookings";
+import ReviewsManagement from "../pages/admin/mainAdmin/reviewsManagement";
+import HotelsManagementDetail from "../pages/admin/mainAdmin/hotelsManagement/hotelsManagementDetail";
+import CreateHotelForm from "../pages/admin/mainAdmin/hotelsManagement/createHotel";
 
 const router = createBrowserRouter([
   {
@@ -71,9 +79,39 @@ const router = createBrowserRouter([
         element: <Hotels />,
       },
       {
-        path:"hotels/:id",
+        path: "hotels/:id",
         element: <HotelDetail />,
-      }
+      },
+      {
+        path: "management",
+        element: <AdminPage />,
+        children: [
+          {
+            path: "",
+            element: <Dashboard />,
+          },
+          {
+            path: "accounts",
+            element: <Accounts />,
+          },
+          {
+            path: "hotels",
+            element: <HotelsManagement />,
+            children: [
+              { path: ":id", element: <HotelsManagementDetail /> },
+              { path: "create-hotel", element: <CreateHotelForm /> },
+            ],
+          },
+          {
+            path: "bookings",
+            element: <Bookings />,
+          },
+          {
+            path: "reviews",
+            element: <ReviewsManagement />,
+          },
+        ],
+      },
     ],
   },
 ]);

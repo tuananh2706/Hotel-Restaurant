@@ -2,16 +2,29 @@ import MoreIcon from "../../assets/icons/moreIcon";
 import StarIcon from "../../assets/icons/starIcon";
 import Demo from "../../assets/img/banner.png";
 import { useState } from "react";
+import { deleteReview } from "../../service/reviewService";
+import Modal from "../myModal";
 
-function RaitingProfile({ profile = true, obj }) {
+function RaitingProfile({ profile = true, obj, className = "", fetchData }) {
   const [dropdownBtn, setDropdownBtn] = useState(false);
-  const { reviewer, reviewText, reviewDate, rating } = obj;
+  const { reviewer, reviewText, reviewDate, rating, hotelReviewId } = obj;
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleDeleteReview = async () => {
+    try {
+      await deleteReview(hotelReviewId);
+      await fetchData();
+      setOpenModal(false);
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra", error.message);
+    }
+  };
 
   return (
     <div
-      className="w-full md:max-w-[532px] h-[160px] 
+      className={`w-full md:max-w-[532px] h-[160px] 
     hover:shadow-lg transition-all duration-200
-    overflow-hidden p-5 rounded-xl relative bg-white"
+    overflow-hidden p-5 rounded-xl relative bg-white ${className}`}
     >
       {/* Overlay that appears when the dropdown is open */}
       {dropdownBtn && (
@@ -31,7 +44,10 @@ function RaitingProfile({ profile = true, obj }) {
           }`}
           style={{ transformOrigin: "top right" }}
         >
-          <button className="w-full text-start hover:bg-slate-100 px-3 py-2">
+          <button
+            onClick={() => setOpenModal(true)}
+            className="w-full text-start hover:bg-slate-100 px-3 py-2"
+          >
             Xóa review
           </button>
         </div>
@@ -64,6 +80,29 @@ function RaitingProfile({ profile = true, obj }) {
           {rating} <StarIcon size="14" color="#007e47" />
         </p>
       </div>
+      <Modal
+        isOpen={openModal}
+        onClose={() => setOpenModal(true)}
+        title="Bạn muốn xóa đánh giá này ?"
+        className={"text-secondary"}
+      >
+        <div className="flex justify-end gap-5">
+          <button
+            className="px-5 py-2 bg-seconGray rounded text-white font-medium"
+            onClick={() => setOpenModal(false)}
+          >
+            {" "}
+            Hủy{" "}
+          </button>
+          <button
+            className="px-5 py-2 bg-danger rounded text-white font-medium"
+            onClick={() => handleDeleteReview()}
+          >
+            {" "}
+            Xác nhận{" "}
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }

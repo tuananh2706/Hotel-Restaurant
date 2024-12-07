@@ -1,5 +1,9 @@
 import { createContext, useEffect, useState } from "react";
-import { getHotels, getHotelsById } from "../service/hotelsService";
+import {
+  getAllHotels,
+  getHotels,
+  getHotelsById,
+} from "../service/hotelsService";
 import { useGlobalContext } from ".";
 
 export const HotelsContext = createContext();
@@ -20,12 +24,7 @@ export const HotelProvider = ({ children }) => {
     pageSize: 5,
   });
 
-  const buildQueryString = (query) => {
-    const queryParams = Object.entries(query)
-      .filter(([key, value]) => value !== null && value !== undefined)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`);
-    return queryParams.join("&");
-  };
+  const { buildQueryString } = useGlobalContext();
 
   useEffect(() => {
     const queryString = buildQueryString(queryParam);
@@ -70,6 +69,7 @@ export const HotelProvider = ({ children }) => {
         setQueryParam,
         totalPages,
         queryParam,
+        fetchHotels,
       }}
     >
       {children}
