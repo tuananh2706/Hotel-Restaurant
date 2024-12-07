@@ -12,6 +12,9 @@ import {
   editInfoHotels,
 } from "../../../../service/hotelsService";
 import EditableField from "../../../../component/editableField";
+import Title from "../../../../component/text/titleCategory";
+import TrashIcon from "../../../../assets/icons/trashIcon";
+import AddBtnIcon from "../../../../assets/icons/addIcon";
 
 const categories = [
   { id: 1, name: "Khách sạn 1 sao" },
@@ -58,6 +61,11 @@ function HotelsManagementDetail() {
   const [editHotelInfo, setEditHotelInfo] = useState({});
   const [editRoomType, setEditRoomType] = useState([]);
 
+  const [selectedRoomType, setSelectedRoomType] = useState();
+  const [selectedRoom, setSelectedRoom] = useState();
+  const [openDeleteRoom, setOpenDeleteRoom] = useState(false);
+  const [openDeleteRoomType, setOpenDeleteRoomType] = useState(false);
+
   const handleChangeValueHotelInfo = (fieldName, newValue) => {
     setEditHotelInfo((prev) => ({
       ...prev,
@@ -80,20 +88,42 @@ function HotelsManagementDetail() {
     const updatedRoomTypes = [...editRoomType];
     updatedRoomTypes[roomTypeIndex].rooms.splice(roomIndex, 1);
     setEditRoomType(updatedRoomTypes);
+    closeModalDeleteRoom();
   };
 
   const deleteRoomType = (roomTypeIndex) => {
     const updatedRoomTypes = [...editRoomType];
     updatedRoomTypes.splice(roomTypeIndex, 1);
     setEditRoomType(updatedRoomTypes);
+    closeModalDeleteRoomType();
+  };
+
+  const openModalDeleteRoom = (roomTypeIndex, roomIndex) => {
+    setOpenDeleteRoom(true);
+    setSelectedRoom({
+      roomTypeIndex: roomTypeIndex,
+      roomIndex: roomIndex,
+    });
+  };
+  const openModalDeleteRoomType = (roomTypeIndex) => {
+    setOpenDeleteRoomType(true);
+    setSelectedRoomType(roomTypeIndex);
+  };
+  const closeModalDeleteRoom = () => {
+    setOpenDeleteRoom(false);
+    setSelectedRoom(null);
+  };
+  const closeModalDeleteRoomType = () => {
+    setOpenDeleteRoomType(false);
+    setSelectedRoomType(null);
   };
 
   const addNewRoomType = () => {
     setEditRoomType([
-      ...roomTypes,
+      ...editRoomType,
       {
         roomTypeId: null,
-        hotelId: roomTypes[0]?.hotelId || 0,
+        hotelId: hotelDetail?.roomTypes[0]?.hotelId || 0,
         typeName: "",
         rooms: [],
       },
@@ -101,7 +131,7 @@ function HotelsManagementDetail() {
   };
 
   const addNewRoom = (roomTypeIndex) => {
-    const updatedRoomTypes = [...roomTypes];
+    const updatedRoomTypes = [...editRoomType];
     updatedRoomTypes[roomTypeIndex].rooms.push({
       roomId: null,
       pricePerNight: "0",
@@ -125,6 +155,8 @@ function HotelsManagementDetail() {
         roomCount: Number(room.roomCount),
       })),
     }));
+
+    console.log("editRoomType", editRoomType);
 
     console.log("Payload for API:", payload);
     // Here you would make your API call
@@ -170,12 +202,12 @@ function HotelsManagementDetail() {
         locationId: hotelDetail.locationId,
         isActive: hotelDetail.isActive,
       });
-      if(hotelDetail?.roomTypes) {
+      if (hotelDetail?.roomTypes) {
         setEditRoomType(hotelDetail.roomTypes);
-      }else{
+      } else {
         setEditRoomType([]);
       }
-      console.log("editRoomType",editRoomType);
+      console.log("editRoomType", editRoomType);
     }
   }, [hotelDetail]);
 
@@ -260,9 +292,9 @@ function HotelsManagementDetail() {
                   Các loại phòng khách sạn:{" "}
                 </h5>
                 <div className="grid grid-cols-2 gap-5 text-danger">
-                  {hotelDetail.roomTypes?.map((roomType) => (
+                  {hotelDetail.roomTypes?.map((roomType, index) => (
                     <p
-                      key={roomType.roomTypeId}
+                      key={index}
                     >{`${roomType.typeName} (${roomType?.rooms.length})`}</p>
                   ))}
                 </div>
@@ -299,8 +331,9 @@ function HotelsManagementDetail() {
                 </h5>
                 <div className="grid grid-cols-2 gap-5 text-danger">
                   {hotelDetail.reviews?.length > 0 ? (
-                    hotelDetail.reviews?.map((review) => (
+                    hotelDetail.reviews?.map((review, index) => (
                       <RaitingProfile
+                        key={index}
                         obj={review}
                         profile
                         className="border border-seconGray"
@@ -409,129 +442,173 @@ function HotelsManagementDetail() {
           <Modal
             isOpen={openEditRoomModal}
             onClose={() => setOpenEditRoomModal(false)}
-            className={"w-auto max-h-[700px] overflow-y-auto"}
+            className={"w-auto max-h-[700px] relative overflow-y-auto "}
             closeBtn={true}
+            title="Chỉnh sửa phòng và loại phòng"
           >
             {editRoomType && (
-              <div className="w-[500px]">
-               
-                <div className="w-full flex justify-end">
+              <div className="w-[600px] flex flex-col gap-5 bg-seconGray bg-opacity-20 rounded-lg p-5">
+                {/* Loại phòng và phòng */}
+                {editRoomType.map((roomType, index) => (
+                  <>
+                    <div
+                      key={index}
+                      className="mb-3 border-b border-b-seconGray pb-3 flex flex-col gap-5
+                        shadow hover:shadow-lg transition-all duration-200
+                        border border-seconGray p-5 rounded-lg bg-white"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="max-w-[250px]">
+                          <Title className="text-3xl">
+                            {roomType.typeName}
+                          </Title>
+                        </div>
+                        <button
+                          className="p-1 bg-none hover:bg-seconGray hover:bg-opacity-50 rounded-full transition-all duration-200 active:scale-95"
+                          onClick={() => openModalDeleteRoomType(index)}
+                        >
+                          <TrashIcon color="#c5270e" />
+                        </button>
+                      </div>
+                      <div>
+                        <div>
+                          <EditableField
+                            fieldName={"typeName"}
+                            fieldValue={roomType.typeName}
+                            label={"Tên loại phòng"}
+                            onSave={(fieldName, value) =>
+                              handleRoomTypeFieldSave(index, fieldName, value)
+                            }
+                          />
+                        </div>
+                      </div>
+                      {/* Phòng */}
+
+                      <h5 className="text-xl text-success font-medium">
+                        Chỉnh sửa thông tin phòng
+                      </h5>
+                      <div>
+                        <div className="flex flex-col gap-5">
+                          {roomType?.rooms?.map((room, roomIndex) => (
+                            <div
+                              key={roomIndex}
+                              className="border border-seconGray grid grid-cols-1 gap-5 relative p-5 shadow rounded-md"
+                            >
+                              <h5 className="text-seconGray text-2xl">
+                                #{roomIndex + 1}
+                              </h5>
+                              <button
+                                className="absolute top-4 right-3 transition-all duration-200 hover:bg-seconGray hover:bg-opacity-50 hover:shadow-sm p-1 rounded-full"
+                                onClick={() =>
+                                  openModalDeleteRoom(index, roomIndex)
+                                }
+                              >
+                                <TrashIcon color="#c5270e" size="20" />
+                              </button>
+                              <EditableField
+                                fieldName={"pricePerNight"}
+                                fieldValue={room.pricePerNight}
+                                label={"Giá qua đêm"}
+                                onSave={(fieldName, value) =>
+                                  handleRoomFieldSave(
+                                    index,
+                                    roomIndex,
+                                    fieldName,
+                                    value
+                                  )
+                                }
+                              />
+                              <EditableField
+                                fieldName={"maxOccupancy"}
+                                fieldValue={room.maxOccupancy}
+                                label={"Số người: "}
+                                onSave={(fieldName, value) =>
+                                  handleRoomFieldSave(
+                                    index,
+                                    roomIndex,
+                                    fieldName,
+                                    value
+                                  )
+                                }
+                              />
+                              <EditableField
+                                fieldName={"roomCount"}
+                                fieldValue={room.roomCount}
+                                label={"Số lượng phòng"}
+                                onSave={(fieldName, value) =>
+                                  handleRoomFieldSave(
+                                    index,
+                                    roomIndex,
+                                    fieldName,
+                                    value
+                                  )
+                                }
+                              />
+                              <EditableField
+                                fieldName={"status"}
+                                fieldValue={room.status}
+                                label={"Trạng thái"}
+                                onSave={(fieldName, value) =>
+                                  handleRoomFieldSave(
+                                    index,
+                                    roomIndex,
+                                    fieldName,
+                                    value
+                                  )
+                                }
+                              />
+                              <EditableField
+                                fieldName={"description"}
+                                fieldValue={room.description}
+                                label={"Mô tả"}
+                                onSave={(fieldName, value) =>
+                                  handleRoomFieldSave(
+                                    index,
+                                    roomIndex,
+                                    fieldName,
+                                    value
+                                  )
+                                }
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex items-center mt-5 justify-center">
+                          <button
+                            className="opacity-70 hover:opacity-100 active:scale-95"
+                            onClick={() => addNewRoom(index)}
+                          >
+                            <AddBtnIcon color="#007e47" size="32" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ))}
+                <div className="w-full flex bg-none rounded-lg">
                   <button
                     onClick={addNewRoomType}
-                    className="text-senconBlue font-medium"
+                    className="text-senconBlue font-medium p-2 transition-all duration-200 active:scale-95 rounded-lg hover:bg-senconBlue hover:text-white"
                   >
                     Thêm loại phòng mới
                   </button>
                 </div>
-                
-                {editRoomType.map((roomType, index) => (
-                  <div key={index} className="mb-6">
-                    <div>
-                      <div>
-                        <EditableField
-                          fieldName={"typeName"}
-                          fieldValue={roomType.typeName}
-                          label={"Tên loại phòng"}
-                          onSave={(fieldName, value) =>
-                            handleRoomTypeFieldSave(index, fieldName, value)
-                          }
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <div>
-                          <button onClick={() => addNewRoom(index)}>
-                            Thêm phòng
-                          </button>
-                          <button onClick={() => deleteRoomType(index)}>
-                            Xóa loại phòng
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      {roomType?.rooms?.map((room, roomIndex) => (
-                        <div key={roomIndex}>
-                          <EditableField
-                            fieldName={"pricePerNight"}
-                            fieldValue={room.pricePerNight}
-                            label={"Giá qua đêm"}
-                            onSave={(fieldName, value) =>
-                              handleRoomFieldSave(
-                                index,
-                                roomIndex,
-                                fieldName,
-                                value
-                              )
-                            }
-                          />
-                          <EditableField
-                            fieldName={"maxOccupancy"}
-                            fieldValue={room.maxOccupancy}
-                            label={"Số người: "}
-                            onSave={(fieldName, value) =>
-                              handleRoomFieldSave(
-                                index,
-                                roomIndex,
-                                fieldName,
-                                value
-                              )
-                            }
-                          />
-                          <EditableField
-                            fieldName={"roomCount"}
-                            fieldValue={room.roomCount}
-                            label={"Số lượng phòng"}
-                            onSave={(fieldName, value) =>
-                              handleRoomFieldSave(
-                                index,
-                                roomIndex,
-                                fieldName,
-                                value
-                              )
-                            }
-                          />
-                          <EditableField
-                            fieldName={"status"}
-                            fieldValue={room.status}
-                            label={"Trạng thái"}
-                            onSave={(fieldName, value) =>
-                              handleRoomFieldSave(
-                                index,
-                                roomIndex,
-                                fieldName,
-                                value
-                              )
-                            }
-                          />
-                          <EditableField
-                            fieldName={"description"}
-                            fieldValue={room.description}
-                            label={"Mô tả"}
-                            onSave={(fieldName, value) =>
-                              handleRoomFieldSave(
-                                index,
-                                roomIndex,
-                                fieldName,
-                                value
-                              )
-                            }
-                          />
-                          <div>
-                            <button
-                              onClick={() => deleteRoom(index, roomIndex)}
-                            >
-                              Xóa phòng
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
               </div>
             )}
-            <button onClick={handleSubmit}>Lưu thay đổi</button>
+            <div className="flex justify-end mt-5 gap-5">
+              <button
+                onClick={() => setOpenEditRoomModal(false)}
+                className="px-5 py-3 bg-seconGray text-white font-medium rounded-lg opacity-70 hover:opacity-100 transition-all duration-200 active:scale-95"
+              >
+                Hủy
+              </button>
+              <button
+                className="p-3 bg-secondary text-white font-medium rounded-lg opacity-70 hover:opacity-100 transition-all duration-200 active:scale-95"
+                onClick={handleSubmit}
+              >
+                Lưu thay đổi
+              </button>
+            </div>
           </Modal>
 
           {/* Modal disable */}
@@ -559,6 +636,57 @@ function HotelsManagementDetail() {
               transition-all duration-200 active:scale-95 hover:opacity-100 text-black font-medium"
               >
                 Hủy
+              </button>
+            </div>
+          </Modal>
+
+          {/* Xác nhận xóa roomType */}
+          <Modal
+            className={"h-[180px] shadow flex flex-col justify-evenly"}
+            isOpen={openDeleteRoomType}
+            onClose={closeModalDeleteRoomType}
+          >
+            <h5 className="text-xl font-medium text-danger">
+              Xác nhận xóa loại phòng này ?
+            </h5>
+            <div className="flex justify-end gap-5 mt-5">
+              <button
+                onClick={closeModalDeleteRoomType}
+                className="p-3 bg-seconGray rounded-md opacity-80 text-white font-medium transition-all duration-200 hover:opacity-100 active:scale-95"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={() => deleteRoomType(selectedRoomType)}
+                className="p-3 bg-danger rounded-md opacity-80 text-white font-medium transition-all duration-200 hover:opacity-100 active:scale-95"
+              >
+                Xác nhận
+              </button>
+            </div>
+          </Modal>
+          {/* Xác nhận xóa Room */}
+          <Modal
+            className={"h-[180px] shadow flex flex-col justify-evenly"}
+            isOpen={openDeleteRoom}
+            onClose={closeModalDeleteRoom}
+          >
+            <h5 className="text-xl font-medium text-danger">
+              Xác nhận xóa phòng này ?
+            </h5>
+            <div className="flex justify-end gap-5 mt-5">
+              <button
+                onClick={closeModalDeleteRoom}
+                className="p-3 bg-seconGray rounded-md opacity-80 text-white font-medium transition-all duration-200 hover:opacity-100 active:scale-95"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={() =>
+                  deleteRoom(selectedRoom.roomTypeIndex, selectedRoom.roomIndex)
+                }
+                className="p-3 bg-danger rounded-md opacity-80 text-white font-medium transition-all duration-200 hover:opacity-100 active:scale-95"
+              >
+                Xác nhận
               </button>
             </div>
           </Modal>
