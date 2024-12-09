@@ -7,11 +7,13 @@ import {
   getAllCounts,
   getInforUser,
   registerAdmin,
+  registerOwnerHotels,
   registerUser,
 } from "../service/authService";
 import { useGlobalContext } from ".";
 import { refreshTokenfnc } from "../service/tokenService";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -114,6 +116,18 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  const registerAccountOwner = async (registerRequest) => {
+    try {
+      setLoading(true);
+      await registerOwnerHotels(registerRequest);
+      return true;
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra!");
+    } finally {
+      setLoading(false);
+    }
+  };
   // FetchUser
   const fetchUser = async (accessToken) => {
     try {
@@ -187,7 +201,8 @@ export const AuthProvider = ({ children }) => {
 
   const fetchAccounts = async () => {
     try {
-      const response = await getAllCounts();
+      const accessToken = localStorage.getItem("AT");
+      const response = await getAllCounts(accessToken);
       return response;
     } catch (error) {
       console.error(
@@ -199,7 +214,8 @@ export const AuthProvider = ({ children }) => {
 
   const removeAccount = async (accountName) => {
     try {
-      await deleteAccount(accountName);
+      const accessToken = localStorage.getItem("AT");
+      await deleteAccount(accountName, accessToken);
       return true;
     } catch (error) {
       console.error(
@@ -207,6 +223,17 @@ export const AuthProvider = ({ children }) => {
         error.response || error.message
       );
     }
+  };
+
+  const logOut = () => {
+    setIsHavedAccount(false);
+    SetUser(null);
+
+    localStorage.removeItem("AT");
+    localStorage.removeItem("ED");
+    localStorage.removeItem("accountName");
+
+    Cookies.remove("token");
   };
 
   return (
@@ -222,6 +249,8 @@ export const AuthProvider = ({ children }) => {
         fetchAccounts,
         removeAccount,
         registerAccountAdmin,
+        registerAccountOwner,
+        logOut
       }}
     >
       {children}

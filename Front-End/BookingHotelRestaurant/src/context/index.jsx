@@ -62,6 +62,24 @@ export const GobalProvider = ({ children }) => {
     return queryParams.join("&");
   };
 
+  const getUserRole = () => {
+    const token = localStorage.getItem("AT");
+
+    // Nếu không có token, trả về null hoặc một giá trị mặc định
+    if (!token) {
+      return null;
+    }
+
+    try {
+      // Giải mã token và lấy role
+      const decoded = jwtDecode(token);
+      return decoded.role;
+    } catch (error) {
+      console.error("Invalid token", error);
+      return null;
+    }
+  };
+
   // Hàm tính toán token
   const isTokenExpired = (token) => {
     try {
@@ -85,6 +103,7 @@ export const GobalProvider = ({ children }) => {
         formatCurrency,
         formatDate2,
         buildQueryString,
+        getUserRole,
       }}
     >
       <AuthProvider>

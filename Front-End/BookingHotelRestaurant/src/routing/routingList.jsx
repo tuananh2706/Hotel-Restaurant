@@ -21,6 +21,8 @@ import Bookings from "../pages/admin/mainAdmin/bookings";
 import ReviewsManagement from "../pages/admin/mainAdmin/reviewsManagement";
 import HotelsManagementDetail from "../pages/admin/mainAdmin/hotelsManagement/hotelsManagementDetail";
 import CreateHotelForm from "../pages/admin/mainAdmin/hotelsManagement/createHotel";
+import { AuthRoute, ProtectedRoute } from "./authRoute";
+import ErrorPage from "./errorPage";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +35,11 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <ProfilePage />,
+        element: (
+          <ProtectedRoute requiredRole={["Admin", "hotel_owner", "User"]}>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: "",
@@ -68,11 +74,19 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <LoginPage />,
+        element: (
+          <AuthRoute>
+            <LoginPage />
+          </AuthRoute>
+        ),
       },
       {
         path: "register",
-        element: <RegisterPage />,
+        element: (
+          <AuthRoute>
+            <RegisterPage />
+          </AuthRoute>
+        ),
       },
       {
         path: "hotels",
@@ -84,7 +98,11 @@ const router = createBrowserRouter([
       },
       {
         path: "management",
-        element: <AdminPage />,
+        element: (
+          <ProtectedRoute requiredRole={["Admin"]}>
+            <AdminPage />,
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: "",
@@ -112,6 +130,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+      { path: "*", element: <ErrorPage /> },
     ],
   },
 ]);

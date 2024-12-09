@@ -1,4 +1,4 @@
-import { apiClient } from "../api/apiClient";
+import { apiClient, setAuthorizationHeader } from "../api/apiClient";
 
 export const getHotels = async (query) => {
   try {
@@ -12,6 +12,8 @@ export const getHotels = async (query) => {
 
 export const getAllHotels = async (query) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.get(`/Hotel/GetAllHotels?${query}`);
     return response.data;
   } catch (error) {
@@ -32,6 +34,8 @@ export const getHotelsById = async (id) => {
 
 export const createHotel = async (payload) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.post(
       "/Hotel/createHotel",
       JSON.stringify(payload)
@@ -45,6 +49,8 @@ export const createHotel = async (payload) => {
 
 export const disableHotel = async (id) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.put(`/Hotel/${id}/deactivate`);
     return response.data;
   } catch (error) {
@@ -55,6 +61,8 @@ export const disableHotel = async (id) => {
 
 export const activateHotel = async (id) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.put(`/Hotel/${id}/activate`);
     return response.data;
   } catch (error) {
@@ -65,6 +73,8 @@ export const activateHotel = async (id) => {
 
 export const editInfoHotels = async (id, payload) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.put(
       `/Hotel/${id}`,
       JSON.stringify(payload)
@@ -77,6 +87,8 @@ export const editInfoHotels = async (id, payload) => {
 
 export const editRoomTypes = async (payload) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.put(
       "/RoomType/update-room-types",
       JSON.stringify(payload)
@@ -89,6 +101,8 @@ export const editRoomTypes = async (payload) => {
 
 export const deleteRoomTypeAsync = async (id) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.delete(`/RoomType/${id}`);
     return response.data;
   } catch (error) {
@@ -98,6 +112,8 @@ export const deleteRoomTypeAsync = async (id) => {
 
 export const deleteRoomAsync = async (id) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.delete(`/Room/${id}`);
     return response.data;
   } catch (error) {
@@ -107,6 +123,8 @@ export const deleteRoomAsync = async (id) => {
 
 export const editInfoServicesAsync = async (payload) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.put("/Service", JSON.stringify(payload));
     return response.data;
   } catch (error) {
@@ -116,6 +134,8 @@ export const editInfoServicesAsync = async (payload) => {
 
 export const deleteServiceAsync = async (id) => {
   try {
+    const accessToken = localStorage.getItem("AT");
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.delete(`/Service/${id}`);
     return response.data;
   } catch (error) {

@@ -252,7 +252,7 @@ const CreateHotelForm = () => {
       className={"w-2/4 h-5/6 overflow-y-auto"}
       onClose={() => navigate(-1)}
       closeBtn={true}
-      title="Thêm mới khách sạn"
+      title="Thêm khách sạn mới"
     >
       <form onSubmit={handleSubmit} className="p-6">
         {/* Hotel Information */}

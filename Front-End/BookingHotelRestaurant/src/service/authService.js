@@ -1,5 +1,6 @@
 import { apiClient, setAuthorizationHeader } from "../api/apiClient";
 
+// Login
 export const authenticateUser = async (loginRequest) => {
   try {
     const response = await apiClient.post(
@@ -12,6 +13,7 @@ export const authenticateUser = async (loginRequest) => {
   }
 };
 
+// Đăng ký User
 export const registerUser = async (registerRequest) => {
   try {
     const response = await apiClient.post(
@@ -24,7 +26,7 @@ export const registerUser = async (registerRequest) => {
     throw error;
   }
 };
-
+// Đăng ký admin
 export const registerAdmin = async (registerRequest) => {
   try {
     const response = await apiClient.post(
@@ -37,7 +39,21 @@ export const registerAdmin = async (registerRequest) => {
     throw error;
   }
 };
+// Đăng ký owner Hotels
+export const registerOwnerHotels = async (registerRequest) => {
+  try {
+    const response = await apiClient.post(
+      "/Account/register-owner",
+      JSON.stringify(registerRequest)
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Đã có lỗi xảy ra: ", error.response || error.message);
+    throw error;
+  }
+};
 
+// Lấy thông tin của user
 export const getInforUser = async (accessToken) => {
   try {
     setAuthorizationHeader(accessToken);
@@ -49,6 +65,7 @@ export const getInforUser = async (accessToken) => {
   }
 };
 
+// đổi mật khẩu
 export const changePassword = async (
   changePasswordRequest,
   accountName,
@@ -69,6 +86,7 @@ export const changePassword = async (
   }
 };
 
+//Thay đổi thông tin cá nhân
 export const changeInformations = async (request, accountName, accessToken) => {
   try {
     setAuthorizationHeader(accessToken);
@@ -86,9 +104,9 @@ export const changeInformations = async (request, accountName, accessToken) => {
 };
 
 // get all account for admin
-export const getAllCounts = async () => {
+export const getAllCounts = async (accessToken) => {
   try {
-    // setAuthorizationHeader(accessToken);
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.get("/Account/AllAccount");
     return response.data;
   } catch (error) {
@@ -99,8 +117,10 @@ export const getAllCounts = async () => {
   }
 };
 
-export const deleteAccount = async (accountName) => {
+// xóa tài khoản
+export const deleteAccount = async (accountName, accessToken) => {
   try {
+    setAuthorizationHeader(accessToken);
     const response = await apiClient.delete(`/Account/${accountName}`);
     return response.data;
   } catch (error) {

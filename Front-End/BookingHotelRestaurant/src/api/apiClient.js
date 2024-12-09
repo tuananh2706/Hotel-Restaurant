@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://192.168.1.161:5000/api", // Thay port khi thay đổi máy server
+  baseURL: "http://192.168.1.146:5000/api", // Thay port khi thay đổi máy server
   headers: {
     "Content-Type": "application/json",
   },

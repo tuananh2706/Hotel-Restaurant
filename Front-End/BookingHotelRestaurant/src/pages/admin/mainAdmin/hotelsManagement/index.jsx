@@ -245,6 +245,7 @@ function HotelsManagement() {
               setQueryParams((prev) => ({
                 ...prev,
                 hotelName: e.target.value,
+                page: 1
               }))
             }
             className={
