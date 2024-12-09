@@ -10,11 +10,20 @@ export const GobalProvider = ({ children }) => {
   const [notification, setNotification] = useState("");
 
   const handleExpiryDate = (expiryDate) => {
-    const now = Date.now();
-    const expirationDate = Date(expiryDate);
-    const timeDifference = now - expirationDate;
-    const daysUntilExpiry = timeDifference / (1000 * 60 * 60 * 24);
-    return daysUntilExpiry;
+    // Lọc bỏ phần vi giây (sau dấu chấm) nếu có để đảm bảo tương thích
+    const formattedExpiryDate = expiryDate.split(".")[0];
+
+    // Tạo đối tượng Date từ chuỗi đã được chuẩn hóa
+    const expirationDate = new Date(formattedExpiryDate);
+
+    // Kiểm tra xem đối tượng Date có hợp lệ không
+    if (isNaN(expirationDate)) {
+      console.error("Ngày hết hạn không hợp lệ.");
+      return null;
+    }
+
+    // Trả về đối tượng Date hợp lệ để sử dụng trong cookie
+    return expirationDate;
   };
 
   function formatCurrency(amount) {
