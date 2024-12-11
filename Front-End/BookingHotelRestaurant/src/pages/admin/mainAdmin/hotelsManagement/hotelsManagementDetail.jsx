@@ -555,14 +555,25 @@ function HotelsManagementDetail() {
           </div>
           {/* Action */}
           <div className="absolute bottom-2 right-10 flex gap-5">
-            <button
-              onClick={() => setOpenDisable(true)}
-              className="px-5 py-2 rounded-lg border bg-seconGray opacity-50 text-black
+            {(hotelDetail.isActive && (
+              <button
+                onClick={() => setOpenDisable(true)}
+                className="px-5 py-2 rounded-lg border bg-seconGray opacity-50 text-black
             transition-all duration-200 ease-in-out active:scale-95
              hover:shadow hover:opacity-100 hover:text-secondary font-medium "
-            >
-              Vô hiệu hóa KS
-            </button>
+              >
+                Tạm ngừng kinh doanh
+              </button>
+            )) || (
+              <button
+                onClick={() => setOpenDisable(true)}
+                className="px-5 py-2 rounded-lg border bg-secondary opacity-80 text-white
+          transition-all duration-200 ease-in-out active:scale-95
+           hover:shadow hover:opacity-100 font-medium "
+              >
+                Kích hoạt KS
+              </button>
+            )}
           </div>
 
           {/* Modal Edit Infomations Hotels */}

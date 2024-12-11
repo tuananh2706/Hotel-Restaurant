@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../myButton";
 import Modal from "../../myModal";
 import UserIcon from "../../../assets/icons/userIcon";
@@ -12,6 +12,7 @@ import DropDownProfile from "./dropdownProfile";
 import HaveNotAccount from "./haveNotAccount";
 import useScreenWithResize from "../../../hook/useScreenWithResize";
 import { useAuth } from "../../../context/authContext";
+import { markAllRead } from "../../../service/notificationsService";
 
 function HeaderRight() {
   const [selectedLocation, setSelectedLocation] = useState("Gò Vấp");
@@ -21,7 +22,27 @@ function HeaderRight() {
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   const screenWidth = useScreenWithResize();
   const isMobile = screenWidth < 769;
-  const { isHavedAccount } = useAuth();
+  const {
+    isHavedAccount,
+    totalNotifications,
+    setTotalNotifications,
+    fetchNotifications,
+  } = useAuth();
+
+  useEffect(() => {
+    if (!isHavedAccount) {
+      setTotalNotifications(0);
+    }
+  }, [isHavedAccount]);
+
+  const handleReadAll = async () => {
+    if (isHavedAccount) {
+      const accessToken = localStorage.getItem("AT");
+      await markAllRead(accessToken);
+      await fetchNotifications(accessToken);
+    }
+    toggleDropdown();
+  };
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -86,10 +107,17 @@ function HeaderRight() {
 
       {/* Notification Button */}
       <Button
-        className={`w-12 h-12 ${isOpen && "opacity-80"}`}
-        onClick={toggleDropdown}
+        className={`w-12 h-12 ${isOpen && "opacity-80"} relative`}
+        onClick={handleReadAll}
       >
         <NotifficationIcon color="white" width="20" height="20" />
+        <span
+          className={`text-xs absolute top-2 ${
+            totalNotifications > 0 ? "opacity-100" : "opacity-0"
+          } text-white w-4 h-4 rounded-full bg-danger right-2`}
+        >
+          {totalNotifications}
+        </span>
       </Button>
 
       {/* User Profile Button */}

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import Input from "../../../component/inputSearch";
-import Button from "../../../component/myButton";
-import Title from "../../../component/text/titleCategory";
-import { useAuth } from "../../../context/authContext";
+import Input from "../../../../component/inputSearch";
+import Button from "../../../../component/myButton";
+import Title from "../../../../component/text/titleCategory";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../context/authContext";
 
-function ChangeInformations() {
+function OwnerChangeInformations() {
   const { user, changeInformationsUser } = useAuth();
   const navigate = useNavigate();
   const [account, setAccount] = useState({
@@ -172,4 +172,4 @@ function ChangeInformations() {
   );
 }
 
-export default ChangeInformations;
+export default OwnerChangeInformations;

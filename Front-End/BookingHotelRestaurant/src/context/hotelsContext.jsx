@@ -5,6 +5,11 @@ import {
   getHotelsById,
 } from "../service/hotelsService";
 import { useGlobalContext } from ".";
+import {
+  activate,
+  getHotelsOwner,
+  suspend,
+} from "../service/ownerHotelsService";
 
 export const HotelsContext = createContext();
 
@@ -14,6 +19,7 @@ export const HotelProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [hotelDetail, setHotelDetail] = useState({});
   const { setNotification, setLoading } = useGlobalContext();
+
   const [queryParam, setQueryParam] = useState({
     hotelName: null,
     categoryId: null,
@@ -59,6 +65,58 @@ export const HotelProvider = ({ children }) => {
     }
   };
 
+  const fetchHotelOwner = async () => {
+    try {
+      const accountName = localStorage.getItem("accountName");
+      const accessToken = localStorage.getItem("AT");
+      const response = await getHotelsOwner(accountName, accessToken);
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra");
+    }
+  };
+
+  const suspendHotelOwner = async (hotelId) => {
+    try {
+      const accountName = localStorage.getItem("accountName");
+      const accessToken = localStorage.getItem("AT");
+      const response = await suspend(accountName, hotelId, accessToken);
+      return response;
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra");
+    }
+  };
+
+  const activeHotelOwner = async (hotelId) => {
+    try {
+      const accountName = localStorage.getItem("accountName");
+      const accessToken = localStorage.getItem("AT");
+      const response = await activate(accountName, hotelId, accessToken);
+      return response;
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra");
+    }
+  };
+
+  const handleFetchAll = async () => {
+    try {
+      setLoading(true);
+      const a = {
+        isActive: false,
+        page: 1,
+        pageSize: 20,
+      };
+      const query = buildQueryString(a);
+      const response = await getAllHotels(query);
+      return response.data;
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <HotelsContext.Provider
       value={{
@@ -70,6 +128,10 @@ export const HotelProvider = ({ children }) => {
         totalPages,
         queryParam,
         fetchHotels,
+        fetchHotelOwner,
+        activeHotelOwner,
+        suspendHotelOwner,
+        handleFetchAll,
       }}
     >
       {children}

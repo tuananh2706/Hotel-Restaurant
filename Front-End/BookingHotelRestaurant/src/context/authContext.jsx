@@ -14,12 +14,25 @@ import { useGlobalContext } from ".";
 import { refreshTokenfnc } from "../service/tokenService";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { getNotifications } from "../service/notificationsService";
+import {
+  getFavoriteHotelsAsync,
+  toggleFavoriteUserAsync,
+} from "../service/favoriteService";
+import { changeBankCard, getBankCard } from "../service/bankCardService";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, SetUser] = useState(null);
   const [isHavedAccount, setIsHavedAccount] = useState(false);
+  const [notificationUser, setNotificationUser] = useState([]);
+  const [favoriteHotelsUser, setFavoriteHotelsUser] = useState([]);
+  const [reviewsUser, setReviewsUser] = useState([]);
+  const [totalNotifications, setTotalNotifications] = useState(0);
+  const [bankCardUser, setBankCardUser] = useState([]);
+  const [ownedHotelsUser, setOwnedHotelsUser] = useState([]);
+
   const { setLoading, setNotification, isTokenExpired, handleExpiryDate } =
     useGlobalContext();
 
@@ -55,6 +68,37 @@ export const AuthProvider = ({ children }) => {
     };
     checkAuthenticaiton();
   }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const accessToken = localStorage.getItem("AT");
+      if (!accessToken) {
+        console.error("Không tìm thấy accessToken");
+        return;
+      }
+      const data = await getNotifications(accessToken);
+      setNotificationUser(data);
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra");
+    }
+  };
+
+  useEffect(() => {
+    if (isHavedAccount) {
+      fetchNotifications();
+
+      const intervalId = setInterval(fetchNotifications, 30000); // Định kì 10s 1 lần
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [isHavedAccount]);
+
+  useEffect(() => {
+    const unRead = notificationUser?.filter((n) => !n.isRead).length || 0;
+    setTotalNotifications(unRead);
+  }, [notificationUser, totalNotifications]);
   //Đăng nhập
   const login = async (loginRequest) => {
     try {
@@ -63,7 +107,17 @@ export const AuthProvider = ({ children }) => {
         emailOrUserName: loginRequest.emailOrUserName,
         password: loginRequest.password,
       });
-      const { accessToken, refreshToken, expiryDate, account } = response;
+      const {
+        accessToken,
+        refreshToken,
+        expiryDate,
+        account,
+        notification,
+        favoriteHotels,
+        reviews,
+        bankCard,
+        ownedHotels,
+      } = response;
       localStorage.setItem("AT", accessToken);
       localStorage.setItem("ED", expiryDate);
       localStorage.setItem("accountName", account.accountName);
@@ -74,6 +128,12 @@ export const AuthProvider = ({ children }) => {
 
       SetUser(account);
       setIsHavedAccount(true);
+      setNotificationUser(notification);
+      setFavoriteHotelsUser(favoriteHotels);
+      setReviewsUser(reviews);
+      setBankCardUser(bankCard);
+      setOwnedHotelsUser(ownedHotels);
+
       return response;
     } catch (error) {
       console.error(
@@ -133,9 +193,22 @@ export const AuthProvider = ({ children }) => {
     try {
       if (accessToken) {
         const response = await getInforUser(accessToken);
-        const { token, user } = response;
+        const {
+          token,
+          user,
+          notification,
+          favoriteHotels,
+          reviews,
+          bankCard,
+          ownedHotels,
+        } = response;
         SetUser(user);
         localStorage.setItem("AT", token);
+        setNotificationUser(notification);
+        setFavoriteHotelsUser(favoriteHotels);
+        setReviewsUser(reviews);
+        setBankCardUser(bankCard);
+        setOwnedHotelsUser(ownedHotels);
       }
     } catch (error) {
       console.error(
@@ -228,12 +301,58 @@ export const AuthProvider = ({ children }) => {
   const logOut = () => {
     setIsHavedAccount(false);
     SetUser(null);
+    setTotalNotifications(0);
+    setNotificationUser([]);
 
     localStorage.removeItem("AT");
     localStorage.removeItem("ED");
     localStorage.removeItem("accountName");
 
     Cookies.remove("token");
+  };
+
+  const fetchBankCard = async () => {
+    try {
+      setLoading(true);
+      const accessToken = localStorage.getItem("AT");
+      const response = await getBankCard(accessToken);
+      setBankCardUser(response);
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchFavoritesUser = async () => {
+    try {
+      const accessToken = localStorage.getItem("AT");
+      const response = await getFavoriteHotelsAsync(accessToken);
+      setFavoriteHotelsUser(response);
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra");
+    }
+  };
+
+  const handleChangeBankCard = async (payload) => {
+    try {
+      setLoading(true);
+      const accessToken = localStorage.getItem("AT");
+      const response = await changeBankCard(accessToken, payload);
+      return response;
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra!");
+    }
+  };
+
+  const toggleFavoriteUser = async (id) => {
+    try {
+      const accessToken = localStorage.getItem("AT");
+      const response = await toggleFavoriteUserAsync(id, accessToken);
+      await fetchFavoritesUser();
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra!");
+    }
   };
 
   return (
@@ -250,7 +369,19 @@ export const AuthProvider = ({ children }) => {
         removeAccount,
         registerAccountAdmin,
         registerAccountOwner,
-        logOut
+        logOut,
+        notificationUser,
+        favoriteHotelsUser,
+        reviewsUser,
+        totalNotifications,
+        setTotalNotifications,
+        fetchNotifications,
+        toggleFavoriteUser,
+        fetchFavoritesUser,
+        fetchBankCard,
+        handleChangeBankCard,
+        bankCardUser,
+        ownedHotelsUser
       }}
     >
       {children}

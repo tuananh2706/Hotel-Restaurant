@@ -1,22 +1,76 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Title from "../../../component/text/titleCategory";
 import Input from "../../../component/inputSearch";
 import Button from "../../../component/myButton";
 import PaymentcardIcon from "../../../assets/icons/paymentcard";
 import ArrowUpIcon from "../../../assets/icons/arrowUpIcon";
 import ArrDownIcon from "../../../assets/icons/arrowDownIcon";
+import { useAuth } from "../../../context/authContext";
 
 function Payment() {
   const [toggleVisa, settoggleVisa] = useState(false);
   const [toggleOther, setToggleOther] = useState(false);
+
+  const { bankCardUser, handleChangeBankCard } = useAuth();
+  const [bankCardPayload, setBankCardPayload] = useState({});
+
+  useEffect(() => {
+    if (bankCardUser) {
+      setBankCardPayload(bankCardUser[0]);
+    } else {
+      setBankCardPayload({
+        bankCardId: null,
+        bankCardName: "",
+        cardNumber: "",
+        expirationDate: Date.now(),
+        cgv: 0,
+        cardType: "VISA",
+      });
+    }
+  }, [bankCardUser]);
+
+
+  function validatePassword(event) {
+    const value = event.target.value.replace(/[^0-9]/g, ""); 
+    if (value.length > 3) {
+      event.target.value = value.slice(0, 3);
+    }
+
+
+    setBankCardPayload((prev) => ({
+      ...prev,
+      cgv: event.target.value,
+    }));
+  }
+
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setBankCardPayload((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await handleChangeBankCard(bankCardPayload);
+      console.log(response);
+    } catch (error) {
+      console.error("Đã có lỗi xảy ra");
+            
+    }
+  };
+
   return (
     <div className="p-2 lg:p-2 flex flex-col gap-8">
       <Title className={"text-[28px] font-medium text-center lg:text-left"}>
         Quản lý phương thức thanh toán
       </Title>
-      {/* VisaPayment */}
+
+      {/* Visa Payment */}
       <div
-        className={` bg-white rounded-xl transition-all duration-500 ease-in-out ${
+        className={`bg-white rounded-xl transition-all duration-500 ease-in-out ${
           toggleVisa ? "h-[316px]" : "h-[60px]"
         } flex flex-col gap-4 p-5 overflow-hidden`}
       >
@@ -35,14 +89,44 @@ function Payment() {
         </a>
         {toggleVisa && (
           <form action="#" className="flex flex-col gap-4">
-            <Input icon={false} placeholder="Nhập tên của bạn" />
-            <Input icon={false} placeholder="Nhập số thẻ" />
-            <div className="flex w-full gap-4 ">
-              <Input type="password" className={"w-full"} icon={false} />
-              <Input className={"w-full"} icon={false} />
+            <Input
+              icon={false}
+              name="bankCardName"
+              value={bankCardPayload.bankCardName}
+              placeholder="Nhập tên của bạn"
+              type="text"
+              onChange={handleInputChange}
+            />
+            <Input
+              icon={false}
+              name="cardNumber"
+              value={bankCardPayload.cardNumber}
+              type="number"
+              placeholder="Nhập số thẻ"
+              onChange={handleInputChange}
+            />
+            <div className="flex w-full gap-4">
+              <Input
+                type="password"
+                maxLength="3"
+                placeholder="CVV"
+                name="cgv"
+                value={bankCardPayload.cgv}
+                onInput={validatePassword}
+                className={"w-full"}
+                icon={false}
+              />
+              <input
+                className="w-full border border-seconGray rounded-lg px-5 py-2"
+                type="date"
+                name="expirationDate"
+                value={bankCardPayload.expirationDate}
+                onChange={handleInputChange}
+              />
             </div>
             <div>
               <Button
+                onClick={handleSubmit}
                 variant="secondary"
                 className={"float-right w-[147px] text-xs h-12"}
               >
@@ -52,7 +136,8 @@ function Payment() {
           </form>
         )}
       </div>
-      {/* Other payment */}
+
+      {/* Other Payment */}
       <div
         className={`bg-white p-5 rounded-xl flex flex-col gap-4 transition-all duration-500 ease-in-out ${
           toggleOther ? " h-[250px] lg:h-[188px]" : "h-[60px]"

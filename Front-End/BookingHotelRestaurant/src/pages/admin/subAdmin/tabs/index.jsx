@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import LogoutIcon from "../../../assets/icons/logoutIcon";
+import LogoutIcon from "../../../../assets/icons/logoutIcon";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import useScreenWithResize from "../../../hook/useScreenWithResize";
-import MenuIcon from "../../../assets/icons/menuIcon";
+import MenuIcon from "../../../../assets/icons/menuIcon";
+import useScreenWithResize from "../../../../hook/useScreenWithResize";
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -14,13 +14,20 @@ const Tabs = () => {
   const location = useLocation();
 
   const tabs = [
-    { label: "Yêu thích", linkTo: "/profile" },
-    { label: "Booking", linkTo: "/profile/booking" },
-    { label: "Thanh toán", linkTo: "/profile/payment" },
-    { label: "Đánh giá", linkTo: "/profile/review" },
-    { label: "Thông tin cá nhân", linkTo: "/profile/changeInformations" },
-    { label: "Thay đổi thông tin cá nhân", linkTo: "/profile/changeInformations", forRenpon: true },
-    { label: "Đổi mật khẩu", linkTo: "/profile/changePassword", forRenpon: true },
+    { label: "Dashboard", linkTo: "/ownerManagement" },
+    { label: "QL Khách sạn", linkTo: "/ownerManagement/hotels" },
+    { label: "QL Booking", linkTo: "/ownerManagement/booking" },
+    { label: "Thông tin cá nhân", linkTo: "/ownerManagement/infomation" },
+    {
+      label: "Thay đổi thông tin cá nhân",
+      linkTo: "/ownerManagement/infomation",
+      forRenpon: true,
+    },
+    {
+      label: "Đổi mật khẩu",
+      linkTo: "/ownerManagement/changlePassword",
+      forRenpon: true,
+    },
   ];
 
   const desktopTabs = tabs.filter((tab) => !tab.forRenpon);
@@ -123,7 +130,7 @@ const Tabs = () => {
       {/* Tab Content */}
       <div className="flex-grow">
         <motion.div
-          className="h-auto lg:h-[600px]"
+          className="h-auto lg:h-[600px] ml-5"
           key={activeTab}
           initial="hidden"
           animate="visible"

@@ -1,31 +1,13 @@
+import { useAuth } from "../../../context/authContext";
 import NotificationItem from "../../notification";
 
 function Notification() {
-  const demo = [
-    {
-      status: "emailCheck",
-    },
-    {
-      status: "timer",
-    },
-    {
-      status: "profileChange",
-    },
-    {
-      status: "passwordChange",
-    },
-    {
-      status: "bookingSuccess",
-    },
-    {
-      status: "bookingSuccess",
-    },
-  ];
+  const { notificationUser } = useAuth();
   return (
     <div className="max-h-[340px] overflow-y-auto scrollbar">
-      {demo &&
-        demo.map((item, index) => (
-          <NotificationItem key={index} type={item.status} />
+      {notificationUser &&
+        notificationUser.map((item) => (
+          <NotificationItem obj={item} key={item.notificationId} />
         ))}
     </div>
   );

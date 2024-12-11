@@ -6,7 +6,6 @@ import Favourite from "../pages/profile/tabs/favourite";
 import Booking from "../pages/profile/tabs/booking";
 import Payment from "../pages/profile/tabs/payment";
 import ReviewRaiting from "../pages/profile/tabs/reviewRaiting";
-import SavedAddress from "../pages/profile/tabs/savedAddress";
 import LoginPage from "../pages/auth/login";
 import RegisterPage from "../pages/auth/register";
 import ChangePassword from "../pages/profile/tabs/changePassword";
@@ -23,6 +22,13 @@ import HotelsManagementDetail from "../pages/admin/mainAdmin/hotelsManagement/ho
 import CreateHotelForm from "../pages/admin/mainAdmin/hotelsManagement/createHotel";
 import { AuthRoute, ProtectedRoute } from "./authRoute";
 import ErrorPage from "./errorPage";
+import OwnerManagement from "../pages/admin/subAdmin";
+import OwnerDashboard from "../pages/admin/mainAdmin/dashboard";
+import OwnerHotelManagement from "../pages/admin/subAdmin/tabs/hotelManagement";
+import OwnerBookingManagement from "../pages/admin/subAdmin/tabs/bookingManagement";
+import OwnerChangeInformations from "../pages/admin/subAdmin/tabs/changleInfomation";
+import OwnerChangePassword from "../pages/admin/subAdmin/tabs/changePassword";
+import PendingHotels from "../pages/admin/mainAdmin/hotelsManagement/pendingHotels";
 
 const router = createBrowserRouter([
   {
@@ -57,10 +63,6 @@ const router = createBrowserRouter([
           {
             path: "review",
             element: <ReviewRaiting />,
-          },
-          {
-            path: "addressSaved",
-            element: <SavedAddress />,
           },
           {
             path: "changePassword",
@@ -116,10 +118,18 @@ const router = createBrowserRouter([
             path: "hotels",
             element: <HotelsManagement />,
             children: [
-              { path: ":id", element: <HotelsManagementDetail /> },
+              {
+                path: ":id",
+                element: (
+                  <ProtectedRoute requiredRole={"Admin"}>
+                    <HotelsManagementDetail />
+                  </ProtectedRoute>
+                ),
+              },
               { path: "create-hotel", element: <CreateHotelForm /> },
             ],
           },
+          { path: "hotels/pending-hotels", element: <PendingHotels /> },
           {
             path: "bookings",
             element: <Bookings />,
@@ -128,6 +138,35 @@ const router = createBrowserRouter([
             path: "reviews",
             element: <ReviewsManagement />,
           },
+        ],
+      },
+      {
+        path: "ownerManagement",
+        element: (
+          <ProtectedRoute requiredRole={"hotel_owner"}>
+            <OwnerManagement />
+          </ProtectedRoute>
+        ),
+        children: [
+          { path: "", element: <OwnerDashboard /> },
+          {
+            path: "hotels",
+            element: <OwnerHotelManagement />,
+            children: [
+              {
+                path: ":id",
+                element: (
+                  <ProtectedRoute requiredRole={"hotel_owner"}>
+                    <HotelsManagementDetail />
+                  </ProtectedRoute>
+                ),
+              },
+              { path: "create-hotel", element: <CreateHotelForm /> },
+            ],
+          },
+          { path: "booking", element: <OwnerBookingManagement /> },
+          { path: "infomation", element: <OwnerChangeInformations /> },
+          { path: "changlePassword", element: <OwnerChangePassword /> },
         ],
       },
       { path: "*", element: <ErrorPage /> },

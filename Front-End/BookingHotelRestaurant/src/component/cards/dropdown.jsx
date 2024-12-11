@@ -21,7 +21,7 @@ function DropDown({
           width: `${width}px`,
           transformOrigin: `${appear}`,
         }}
-        className={`absolute bg-white shadow-sm border-seconGray border z-10 px-2 rounded-xl ${className} 
+        className={`absolute bg-white shadow-sm border-seconGray border z-10 rounded-xl ${className} 
         transition-all duration-200 ease-in-out transform ${
           isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0"
         }
